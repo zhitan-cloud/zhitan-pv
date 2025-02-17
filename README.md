@@ -52,3 +52,11 @@
 
 演示地址：  
 http://pvadmin.zhitancloud.com/
+
+## 沟通交流
+
+扫码添加微信交流，加微信请备注：pv。
+
+<p align="center">
+  <img src="readme/img/image.png" width=50% height=50%>
+</p>
