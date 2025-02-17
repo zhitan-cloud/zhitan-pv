@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pvadmin.mapper.SparePartsMapper">
+
+    <resultMap type="SpareParts" id="SparePartsResult">
+        <result property="id" column="id"/>
+        <result property="code" column="code"/>
+        <result property="name" column="name"/>
+        <result property="specs" column="specs"/>
+        <result property="amount" column="amount"/>
+        <result property="remark" column="remark"/>
+        <result property="location" column="location"/>
+        <result property="locationId" column="location_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateBy" column="update_by"/>
+    </resultMap>
+
+    <sql id="selectSparePartsVo">
+        select id,
+               code,
+               `name`,
+               specs,
+               amount,
+               remark,
+               create_time,
+               create_by,
+               update_time,
+               update_by,
+               location,
+               location_id
+        from spare_parts
+    </sql>
+
+    <select id="selectSparePartsList" resultType="com.ruoyi.pvadmin.domain.vo.SparePartsVO">
+        select
+        d.id,
+        d.`code`,
+        d.`name`,
+        d.specs,
+        d.amount,
+        ps.`name`,
+        d.remark,
+        d.create_time,
+        d.create_by,
+        d.update_time,
+        d.update_by,
+        d.location,
+        d.location_id as locationId
+        FROM
+        spare_parts d
+        LEFT JOIN power_station ps ON d.power_station_id = ps.id
+        <where>
+            <if test="code != null  and code != ''">
+                and d.code = #{code}
+            </if>
+            <if test="name != null  and name != ''">
+                and d.name like concat('%', #{name}, '%')
+            </if>
+            <if test="location != null  and location != ''">
+                and d.location like concat('%', #{location}, '%')
+            </if>
+            <if test="specs != null  and specs != ''">
+                and d.specs = #{specs}
+            </if>
+            <if test="powerStationId != null  and powerStationId != ''">
+                and d.power_station_id = #{powerStationId}
+            </if>
+            <if test="locationId != null  and locationId != ''">
+                and d.location_id = #{locationId}
+            </if>
+            ${params.dataScope}
+        </where>
+    </select>
+
+    <select id="selectSparePartsListByParam" parameterType="SparePartsVO" resultMap="SparePartsResult">
+        <include refid="selectSparePartsVo"/>
+        <where>
+            <if test="code != null  and code != ''">
+                and code = #{code}
+            </if>
+            <if test="name != null  and name != ''">
+                and `name` = #{name}
+            </if>
+            <if test="specs != null  and specs != ''">
+                and specs = #{specs}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectSparePartsById" parameterType="String"
+            resultMap="SparePartsResult">
+        <include refid="selectSparePartsVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSpareParts" parameterType="SpareParts">
+        insert into spare_parts
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,
+            </if>
+            <if test="code != null and code != ''">code,
+            </if>
+            <if test="name != null and name != ''">name,
+            </if>
+            <if test="specs != null and specs != ''">specs,
+            </if>
+            <if test="amount != null">amount,
+            </if>
+            <if test="remark != null">remark,
+            </if>
+            <if test="createTime != null">create_time,
+            </if>
+            <if test="createBy != null">create_by,
+            </if>
+            <if test="updateTime != null">update_time,
+            </if>
+            <if test="updateBy != null">update_by,
+            </if>
+            <if test="location != null">location,
+            </if>
+            <if test="locationId != null">location_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},
+            </if>
+            <if test="code != null and code != ''">#{code},
+            </if>
+            <if test="name != null and name != ''">#{name},
+            </if>
+            <if test="specs != null and specs != ''">#{specs},
+            </if>
+            <if test="amount != null">#{amount},
+            </if>
+            <if test="remark != null">#{remark},
+            </if>
+            <if test="createTime != null">#{createTime},
+            </if>
+            <if test="createBy != null">#{createBy},
+            </if>
+            <if test="updateTime != null">#{updateTime},
+            </if>
+            <if test="updateBy != null">#{updateBy},
+            </if>
+            <if test="location != null">#{location},
+            </if>
+            <if test="locationId != null">#{locationId},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateSpareParts" parameterType="SpareParts">
+        update spare_parts
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null and code != ''">code =
+                #{code},
+            </if>
+            <if test="name != null and name != ''">`name` =
+                #{name},
+            </if>
+            <if test="specs != null and specs != ''">specs =
+                #{specs},
+            </if>
+            <if test="amount != null">amount =
+                #{amount},
+            </if>
+            <if test="remark != null">remark =
+                #{remark},
+            </if>
+            <if test="createTime != null">create_time =
+                #{createTime},
+            </if>
+            <if test="createBy != null">create_by =
+                #{createBy},
+            </if>
+            <if test="updateTime != null">update_time =
+                #{updateTime},
+            </if>
+            <if test="updateBy != null">update_by =
+                #{updateBy},
+            </if>
+            <if test="location != null">location =
+                #{location},
+            </if>
+            <if test="locationId != null">location_id =
+                #{locationId}
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSparePartsById" parameterType="String">
+        delete
+        from spare_parts
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteSparePartsByIds" parameterType="String">
+        delete from spare_parts where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pvadmin.mapper.AlarmMapper">
+
+
+    <select id="listByQueryDto" resultType="com.ruoyi.pvadmin.domain.vo.AlarmVO">
+        SELECT
+            a.id,
+            ps.`name` powerStationName,
+            d.`code` deviceCode,
+            d.`name` deviceName,
+            a.err_code,
+            a.error_description,
+            a.`level`,
+            a.`status`,
+            a.data_time,
+            a.remark,
+            a.image_url
+        FROM
+            alarm a
+                LEFT JOIN device d ON d.`code` = a.device_code
+                LEFT JOIN power_station ps ON ps.id = d.power_station_id
+        <where>
+            a.id is not null
+            AND a.error_description != ''
+            AND a.error_description is not null
+            <if test="beginTime != null and endTime != null">
+                and (a.data_time between #{beginTime} and #{endTime})
+            </if>
+            <if test="powerStationName != null and powerStationName != ''">
+                and ps.`name` like concat('%', #{powerStationName}, '%')
+            </if>
+            <if test="deviceName != null and deviceName != ''">
+                and d.`name` like concat('%', #{deviceName}, '%')
+            </if>
+            <if test="status != null and status != ''">
+                and a.`status` = #{status}
+            </if>
+            <if test="level != null and level != ''">
+                and a.`level` = #{level}
+            </if>
+            ${params.dataScope}
+        </where>
+            ORDER BY a.data_time DESC
+    </select>
+    <select id="getInfoById" resultType="com.ruoyi.pvadmin.domain.vo.AlarmVO">
+        SELECT
+            a.id,
+            ps.`name` powerStationName,
+            d.`code` deviceCode,
+            d.`name` deviceName,
+            a.err_code,
+            a.error_description,
+            a.`level`,
+            a.`status`,
+            a.data_time,
+            a.remark,
+            a.image_url
+        FROM
+            alarm a
+                LEFT JOIN device d ON d.`code` = a.device_code
+                LEFT JOIN power_station ps ON ps.id = d.power_station_id
+        WHERE
+            a.id = #{id}
+    </select>
+</mapper>

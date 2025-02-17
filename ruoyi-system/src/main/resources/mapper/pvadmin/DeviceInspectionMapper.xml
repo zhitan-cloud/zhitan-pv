@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pvadmin.mapper.DeviceInspectionMapper">
+
+    <resultMap type="DeviceInspection" id="DeviceInspectionResult">
+        <result property="id" column="id"/>
+        <result property="powerStationId" column="power_station_id"/>
+        <result property="powerStationName" column="power_station_name"/>
+        <result property="deviceCode" column="device_code"/>
+        <result property="deviceName" column="device_name"/>
+        <result property="inspectionStaff" column="inspection_staff"/>
+        <result property="inspectionResult" column="inspection_result"/>
+        <result property="remark" column="remark"/>
+        <result property="inspectionStartTime" column="inspection_start_time"/>
+        <result property="inspectionEndTime" column="inspection_end_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="sparePartNameOrNumber" column="spare_part_name_or_number"/>
+        <result property="estimatedPowerLoss" column="estimated_power_loss"/>
+    </resultMap>
+
+    <sql id="selectDeviceInspectionVo">
+        select id,
+               device_code,
+               device_name,
+               inspection_start_time,
+               inspection_end_time,
+               inspection_staff,
+               inspection_result,
+               remark,
+               power_station_id,
+               power_station_name,
+               spare_part_name_or_number,
+               estimated_power_loss,
+               create_time,
+               create_by,
+               update_time,
+               update_by
+        from device_inspection
+    </sql>
+
+    <select id="selectDeviceInspectionList1" parameterType="DeviceInspection" resultMap="DeviceInspectionResult">
+        <include refid="selectDeviceInspectionVo"/>
+        <where>
+            <if test="deviceCode != null  and deviceCode != ''">
+                and device_code = #{deviceCode}
+            </if>
+            <if test="deviceName != null  and deviceName != ''">
+                and device_name like concat('%', #{deviceName}, '%')
+            </if>
+            <if test="inspectionStaff != null  and inspectionStaff != ''">
+                and inspection_staff = #{inspectionStaff}
+            </if>
+            <if test="inspectionResult != null  and inspectionResult != ''">
+                and inspection_result = #{inspectionResult}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectDeviceInspectionList" resultType="com.ruoyi.pvadmin.domain.vo.DeviceInspectionVO">
+        SELECT p.id,
+        p.device_code,
+        p.device_name,
+        p.inspection_type,
+        p.inspection_start_time,
+        p.inspection_end_time,
+        p.inspection_staff,
+        p.inspection_result,
+        p.annex,
+        p.remark,
+        p.create_time,
+        p.spare_part_name_or_number,
+        p.estimated_power_loss,
+        p.power_station_id,
+        p.power_station_name
+        FROM device_inspection p
+        <where>
+            <if test="deviceCode != null and deviceCode != ''">
+                and p.device_code like concat('%', #{deviceCode}, '%')
+            </if>
+            <if test="deviceName != null and deviceName != ''">
+                and p.device_name like concat('%', #{deviceName}, '%')
+            </if>
+            <if test="inspectionType != null and inspectionType != ''">
+                and p.inspection_type = #{inspectionType}
+            </if>
+            <if test="powerStationName != null and powerStationName != ''">
+                and p.power_station_name like concat('%', #{powerStationName}, '%')
+            </if>
+            ${params.dataScope}
+        </where>
+        ORDER BY p.create_time DESC
+    </select>
+
+    <select id="selectDeviceInspectionById" resultType="com.ruoyi.pvadmin.domain.vo.DeviceInspectionVO">
+        SELECT id,
+               device_code,
+               device_name,
+               inspection_start_time,
+               inspection_end_time,
+               inspection_type,
+               inspection_staff,
+               inspection_result,
+               annex,
+               remark,
+               create_time,
+               spare_part_name_or_number,
+               estimated_power_loss,
+               power_station_id,
+               power_station_name
+        FROM device_inspection
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertDeviceInspection" parameterType="DeviceInspection">
+        insert into device_inspection
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,
+            </if>
+            <if test="sparePartNameOrNumber != null and sparePartNameOrNumber != ''">spare_part_name_or_number,
+            </if>
+            <if test="powerStationId != null and powerStationId != ''">power_station_id,
+            </if>
+            <if test="powerStationName != null and powerStationName != ''">power_station_name,
+            </if>
+            <if test="estimatedPowerLoss != null">estimated_power_loss,
+            </if>
+            <if test="deviceCode != null and deviceCode != ''">device_code,
+            </if>
+            <if test="deviceName != null and deviceName != ''">device_name,
+            </if>
+            <if test="inspectionStartTime != null">inspection_start_time,
+            </if>
+            <if test="inspectionEndTime != null">inspection_end_time,
+            </if>
+            <if test="inspectionStaff != null">inspection_staff,
+            </if>
+            <if test="inspectionResult != null">inspection_result,
+            </if>
+            <if test="remark != null">remark,
+            </if>
+            <if test="createTime != null">create_time,
+            </if>
+            <if test="createBy != null">create_by,
+            </if>
+            <if test="updateTime != null">update_time,
+            </if>
+            <if test="updateBy != null">update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},
+            </if>
+            <if test="sparePartNameOrNumber != null and sparePartNameOrNumber != ''">#{sparePartNameOrNumber},
+            </if>
+            <if test="powerStationId != null and powerStationId != ''">#{powerStationId},
+            </if>
+            <if test="powerStationName != null and powerStationName != ''">#{powerStationName},
+            </if>
+            <if test="estimatedPowerLoss != null">#{estimatedPowerLoss},
+            </if>
+            <if test="deviceCode != null and deviceCode != ''">#{deviceCode},
+            </if>
+            <if test="deviceName != null and deviceName != ''">#{deviceName},
+            </if>
+            <if test="inspectionStartTime != null">#{inspectionStartTime},
+            </if>
+            <if test="inspectionEndTime != null">#{inspectionEndTime},
+            </if>
+            <if test="inspectionStaff != null">#{inspectionStaff},
+            </if>
+            <if test="inspectionResult != null">#{inspectionResult},
+            </if>
+            <if test="remark != null">#{remark},
+            </if>
+            <if test="createTime != null">#{createTime},
+            </if>
+            <if test="createBy != null">#{createBy},
+            </if>
+            <if test="updateTime != null">#{updateTime},
+            </if>
+            <if test="updateBy != null">#{updateBy},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateDeviceInspection" parameterType="DeviceInspection">
+        update device_inspection
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sparePartNameOrNumber != null and sparePartNameOrNumber != ''">spare_part_name_or_number =
+                #{sparePartNameOrNumber},
+            </if>
+            <if test="powerStationId != null and powerStationId != ''">power_station_id =
+                #{powerStationId},
+            </if>
+            <if test="powerStationName != null and powerStationName != ''">power_station_name =
+                #{powerStationName},
+            </if>
+            <if test="estimatedPowerLoss != null">estimated_power_loss =
+                #{estimatedPowerLoss},
+            </if>
+            <if test="deviceCode != null and deviceCode != ''">device_code =
+                #{deviceCode},
+            </if>
+            <if test="deviceName != null and deviceName != ''">device_name =
+                #{deviceName},
+            </if>
+            <if test="inspectionStartTime != null">inspection_start_time =
+                #{inspectionStartTime},
+            </if>
+            <if test="inspectionEndTime != null">inspection_end_time =
+                #{inspectionEndTime},
+            </if>
+            <if test="inspectionStaff != null">inspection_staff =
+                #{inspectionStaff},
+            </if>
+            <if test="inspectionResult != null">inspection_result =
+                #{inspectionResult},
+            </if>
+            <if test="remark != null">remark =
+                #{remark},
+            </if>
+            <if test="createTime != null">create_time =
+                #{createTime},
+            </if>
+            <if test="createBy != null">create_by =
+                #{createBy},
+            </if>
+            <if test="updateTime != null">update_time =
+                #{updateTime},
+            </if>
+            <if test="updateBy != null">update_by =
+                #{updateBy},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDeviceInspectionById" parameterType="String">
+        delete
+        from device_inspection
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteDeviceInspectionByIds" parameterType="String">
+        delete from device_inspection where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

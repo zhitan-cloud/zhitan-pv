@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pvadmin.mapper.DeviceMapper">
+
+    <delete id="deleteDeviceById" parameterType="String">
+        delete
+        from device
+        where id = #{id}
+    </delete>
+
+    <select id="listByPowerStationId" resultType="java.lang.String">
+        SELECT
+        id
+        FROM
+        `device`
+        <where>
+            <if test="powerStationId != null and powerStationId != ''">
+                power_station_id = #{powerStationId}
+            </if>
+        </where>
+    </select>
+
+    <select id="listByPowerStationIds" resultType="com.ruoyi.pvadmin.domain.entity.Device">
+        SELECT
+        id,
+        power_station_id
+        FROM
+        `device`
+        WHERE
+        power_station_id IN
+        <foreach collection="powerStationIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="listDeviceById" resultType="com.ruoyi.pvadmin.domain.entity.Device">
+        SELECT
+        id,
+        `name`
+        FROM
+        `device`
+        <where>
+            <if test="deviceId != null and deviceId != ''">
+                id = #{deviceId}
+            </if>
+        </where>
+    </select>
+
+    <select id="listAmmeterByPowerStationId" resultType="com.ruoyi.pvadmin.domain.entity.Device">
+        SELECT
+        id,
+        `name`
+        FROM
+        `device`
+        <where>
+            ammeter = 1
+            <if test="powerStationId != null and powerStationId != ''">
+               and power_station_id = #{powerStationId}
+            </if>
+        </where>
+    </select>
+
+    <select id="listInforByPowerStationId" resultType="com.ruoyi.pvadmin.domain.entity.Device">
+        SELECT
+            id,
+            `code`,
+            `name`,
+            capacity,
+            factory,
+            ammeter
+        FROM
+            `device`
+        WHERE
+            power_station_id = #{id}
+    </select>
+    <select id="listAllDeviceByStationId" resultType="com.ruoyi.pvadmin.domain.entity.Device">
+        SELECT
+        id,
+        `name`
+        FROM
+        `device`
+        <where>
+            <if test="powerStationId != null and powerStationId != ''">
+                and power_station_id = #{powerStationId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectDeviceList" resultType="com.ruoyi.pvadmin.domain.vo.DeviceVO">
+        SELECT
+            d.id,
+            d.`code`,
+            d.`name`,
+            dt.`name` deviceType,
+            d.capacity,
+            ps.`name` powerStationName,
+            d.create_time,
+            d.ammeter,
+            d.factory,
+            d.rated_ac_power,
+            d.power_station_id
+        FROM
+            device d
+            LEFT JOIN power_station ps ON d.power_station_id = ps.id
+            LEFT JOIN device_type dt ON d.device_type_id = dt.id
+        <where>
+            <if test="name != null and name != ''">
+                d.name like concat('%', #{name}, '%')
+            </if>
+            <if test="code != null and code != ''">
+                and d.code like concat('%', #{code}, '%')
+            </if>
+            <if test="ammeter != null">
+                and d.ammeter = #{ammeter}
+            </if>
+            <if test="deviceTypeId != null and deviceTypeId != ''">
+                and d.device_type_id = #{deviceTypeId}
+            </if>
+            <if test="powerStationId != null and powerStationId != ''">
+                and d.power_station_id = #{powerStationId}
+            </if>
+            ${params.dataScope}
+        </where>
+        ORDER BY
+        d.`name` ASC
+    </select>
+
+    <select id="listDeviceId" resultType="java.lang.String">
+        SELECT
+            id
+        FROM
+            device d
+        <where>
+            <if test="name != null and name != ''">
+                d.name like concat('%', #{name}, '%')
+            </if>
+            <if test="code != null and code != ''">
+                and d.code like concat('%', #{code}, '%')
+            </if>
+            <if test="ammeter != null">
+                and d.ammeter = #{ammeter}
+            </if>
+            ${params.dataScope}
+        </where>
+    </select>
+
+    <select id="listHomeDeviceIdByPowerStationId" resultType="java.lang.String">
+        SELECT
+        id
+        FROM
+        `device` d
+        <where>
+            <if test="powerStationId != null and powerStationId != ''">
+                power_station_id = #{powerStationId}
+            </if>
+            ${params.dataScope}
+        </where>
+    </select>
+
+    <select id="listDeviceCode" resultType="java.lang.String">
+        SELECT
+            code
+        FROM
+            device d
+        <where>
+            <if test="name != null and name != ''">
+                d.name like concat('%', #{name}, '%')
+            </if>
+            <if test="code != null and code != ''">
+                and d.code like concat('%', #{code}, '%')
+            </if>
+            <if test="ammeter != null">
+                and d.ammeter = #{ammeter}
+            </if>
+            ${params.dataScope}
+        </where>
+    </select>
+
+    <select id="listByPermissions" resultType="com.ruoyi.pvadmin.domain.entity.Device">
+        SELECT
+            id,
+            `name`,
+            ammeter
+        FROM
+            `device` d
+        <where>
+            1=1
+            <if test="deviceId != null and deviceId != ''">
+                and id = #{deviceId}
+            </if>
+            <if test="deviceId == null and ammeter != null and ammeter != ''">
+                and ammeter = #{ammeter}
+            </if>
+            ${params.dataScope}
+        </where>
+    </select>
+
+    <select id="listDeviceIdsByPowerStationId" resultType="java.lang.String">
+        SELECT
+            id
+        FROM
+            device d
+        <where>
+            <if test="powerStationId != null and powerStationId != ''">
+                power_station_id = #{powerStationId}
+            </if>
+            ${params.dataScope}
+        </where>
+    </select>
+
+    <select id="listCodeByPermissions" resultType="java.lang.String">
+        SELECT
+            `code`
+        FROM
+            device
+        <where>
+            ${params.dataScope}
+        </where>
+    </select>
+
+</mapper>

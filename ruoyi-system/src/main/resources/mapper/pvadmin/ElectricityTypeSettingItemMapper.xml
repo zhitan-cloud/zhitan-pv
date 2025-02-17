@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pvadmin.mapper.ElectricityTypeSettingItemMapper">
+
+    <resultMap type="ElectricityTypeSettingItem" id="ElectricityTypeSettingItemResult">
+            <result property="id" column="id"/>
+            <result property="parentId" column="parent_id"/>
+            <result property="type" column="type"/>
+            <result property="beginTime" column="begin_time"/>
+            <result property="endTime" column="end_time"/>
+            <result property="electricityPrice" column="electricity_price"/>
+            <result property="remark" column="remark"/>
+            <result property="createTime" column="create_time"/>
+            <result property="createBy" column="create_by"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="updateBy" column="update_by"/>
+    </resultMap>
+
+    <sql id="selectElectricityTypeSettingItemVo">
+        select id, parent_id, type, begin_time, end_time, electricity_price, remark, create_time, create_by, update_time, update_by
+        from electricity_type_setting_item
+    </sql>
+
+    <select id="selectElectricityTypeSettingItemList" parameterType="ElectricityTypeSettingItem" resultMap="ElectricityTypeSettingItemResult">
+        <include refid="selectElectricityTypeSettingItemVo"/>
+        <where>
+                        <if test="parentId != null  and parentId != ''">
+                            and parent_id = #{parentId}
+                        </if>
+                        <if test="type != null  and type != ''">
+                            and type = #{type}
+                        </if>
+                        <if test="beginTime != null ">
+                            and begin_time = #{beginTime}
+                        </if>
+                        <if test="endTime != null ">
+                            and end_time = #{endTime}
+                        </if>
+                        <if test="electricityPrice != null ">
+                            and electricity_price = #{electricityPrice}
+                        </if>
+        </where>
+    </select>
+
+    <select id="selectElectricityTypeSettingItemById" parameterType="String"
+            resultMap="ElectricityTypeSettingItemResult">
+            <include refid="selectElectricityTypeSettingItemVo"/>
+            where id = #{id}
+    </select>
+
+    <insert id="insertElectricityTypeSettingItem" parameterType="ElectricityTypeSettingItem">
+        insert into electricity_type_setting_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                    <if test="id != null">id,
+                    </if>
+                    <if test="parentId != null and parentId != ''">parent_id,
+                    </if>
+                    <if test="type != null and type != ''">type,
+                    </if>
+                    <if test="beginTime != null">begin_time,
+                    </if>
+                    <if test="endTime != null">end_time,
+                    </if>
+                    <if test="electricityPrice != null">electricity_price,
+                    </if>
+                    <if test="remark != null">remark,
+                    </if>
+                    <if test="createTime != null">create_time,
+                    </if>
+                    <if test="createBy != null">create_by,
+                    </if>
+                    <if test="updateTime != null">update_time,
+                    </if>
+                    <if test="updateBy != null">update_by,
+                    </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                    <if test="id != null">#{id},
+                    </if>
+                    <if test="parentId != null and parentId != ''">#{parentId},
+                    </if>
+                    <if test="type != null and type != ''">#{type},
+                    </if>
+                    <if test="beginTime != null">#{beginTime},
+                    </if>
+                    <if test="endTime != null">#{endTime},
+                    </if>
+                    <if test="electricityPrice != null">#{electricityPrice},
+                    </if>
+                    <if test="remark != null">#{remark},
+                    </if>
+                    <if test="createTime != null">#{createTime},
+                    </if>
+                    <if test="createBy != null">#{createBy},
+                    </if>
+                    <if test="updateTime != null">#{updateTime},
+                    </if>
+                    <if test="updateBy != null">#{updateBy},
+                    </if>
+        </trim>
+    </insert>
+
+    <update id="updateElectricityTypeSettingItem" parameterType="ElectricityTypeSettingItem">
+        update electricity_type_setting_item
+        <trim prefix="SET" suffixOverrides=",">
+                    <if test="parentId != null and parentId != ''">parent_id =
+                        #{parentId},
+                    </if>
+                    <if test="type != null and type != ''">type =
+                        #{type},
+                    </if>
+                    <if test="beginTime != null">begin_time =
+                        #{beginTime},
+                    </if>
+                    <if test="endTime != null">end_time =
+                        #{endTime},
+                    </if>
+                    <if test="electricityPrice != null">electricity_price =
+                        #{electricityPrice},
+                    </if>
+                    <if test="remark != null">remark =
+                        #{remark},
+                    </if>
+                    <if test="createTime != null">create_time =
+                        #{createTime},
+                    </if>
+                    <if test="createBy != null">create_by =
+                        #{createBy},
+                    </if>
+                    <if test="updateTime != null">update_time =
+                        #{updateTime},
+                    </if>
+                    <if test="updateBy != null">update_by =
+                        #{updateBy},
+                    </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteElectricityTypeSettingItemById" parameterType="String">
+        delete
+        from electricity_type_setting_item where id = #{id}
+    </delete>
+
+    <delete id="deleteElectricityTypeSettingItemByIds" parameterType="String">
+        delete from electricity_type_setting_item where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

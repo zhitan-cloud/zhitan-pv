@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pvadmin.mapper.DeviceTypeIndexTemplateMapper">
+
+
+    <select id="listByType" resultType="com.ruoyi.pvadmin.domain.model.IndexTemplateModel">
+        SELECT id,
+               `name`,
+               `code`,
+               `device_type_id`,
+               index_type,
+               unit,
+               tag_key
+        FROM `device_type_index_template`
+        WHERE device_type_id = #{type}
+    </select>
+
+</mapper>

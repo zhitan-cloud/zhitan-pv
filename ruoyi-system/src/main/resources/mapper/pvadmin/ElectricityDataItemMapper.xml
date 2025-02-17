@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pvadmin.mapper.ElectricityDataItemMapper">
+
+    <select id="getTotalCumulativeGeneration" resultType="com.ruoyi.pvadmin.domain.vo.CumulativeGenerationVO">
+        SELECT IFNULL(SUM(`value`), 0) sumValue,
+               IFNULL(SUM(`cost`), 0)  sumEarnings
+        FROM `electricity_data_item`
+    </select>
+
+    <select id="listDataItemByPowerStationIds"
+            resultType="com.ruoyi.pvadmin.domain.entity.ElectricityDataItem">
+        SELECT
+            e.device_id,
+            e.data_time,
+            e.`value`,
+            e.cost,
+            e.price
+        FROM
+            device d
+            LEFT JOIN `electricity_data_item` e ON e.device_id = d.id
+        WHERE
+            d.power_station_id IN
+            <foreach collection="powerStationIds" item="powerStationId" open="(" separator="," close=")">
+                #{powerStationId}
+            </foreach>
+            and (e.data_time BETWEEN #{beginTime} and #{endTime})
+            and e.`value` IS NOT NULL
+            ${params.dataScope}
+    </select>
+
+    <select id="listDataItemByDeviceIds" resultType="com.ruoyi.pvadmin.domain.entity.ElectricityDataItem">
+        SELECT
+            device_id,
+            data_time,
+            `value`,
+            cost,
+            price
+        FROM
+            `electricity_data_item`
+        WHERE
+            device_id IN
+        <foreach collection="deviceIds" item="deviceId" open="(" separator="," close=")">
+            #{deviceId}
+        </foreach>
+        and (data_time BETWEEN #{beginTime} and #{endTime})
+    </select>
+
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pvadmin.mapper.DeviceIndexMapper">
+
+
+    <select id="getIndexByIndexCode" resultType="java.lang.String">
+        SELECT index_code
+        FROM `device_index`
+        WHERE index_code LIKE concat('%', #{indexCode})
+          AND device_id = #{deviceId} LIMIT 1
+    </select>
+
+    <select id="listByDeviceId" resultType="java.lang.String">
+        SELECT index_code
+        FROM `device_index`
+        WHERE device_id = #{deviceId}
+    </select>
+
+    <select id="listTemplateByDeviceIds" resultType="com.ruoyi.pvadmin.domain.entity.DeviceIndex">
+        SELECT DISTINCT
+        di.id,
+        di.`index_code`,
+        dt.`name` indexName,
+        di.unit,
+        di.device_id
+        FROM
+            `device_index` di
+            LEFT JOIN `device_type_index_template` dt ON di.index_id = dt.id
+        WHERE
+            di.device_id in
+            <foreach collection="deviceIds" item="deviceId" open="(" separator="," close=")">
+                #{deviceId}
+            </foreach>
+            and dt.id IS NOT NULL
+            and dt.index_type = 'COLLECT'
+        ORDER BY di.`index_code` ASC
+    </select>
+
+    <update id="updateFactor">
+        <foreach collection="request" item="item">
+            update device_index
+            set factor=#{item.factor}
+            where index_id = #{item.indexId}
+            and device_id = #{item.deviceId}
+        </foreach>
+    </update>
+
+</mapper>

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pvadmin.mapper.PowerStationMapper">
+
+    <resultMap type="PowerStation" id="PowerStationResult">
+        <result property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="code" column="code"/>
+        <result property="name" column="name"/>
+        <result property="subsidizedPrices" column="subsidized_prices"/>
+        <result property="installedCapacity" column="installed_capacity"/>
+        <result property="lon" column="lon"/>
+        <result property="lat" column="lat"/>
+        <result property="gridVoltage" column="grid_voltage"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateBy" column="update_by"/>
+    </resultMap>
+
+    <sql id="selectPowerStationVo">
+        select id,
+               parent_id,
+               code,
+               name,
+               lon,
+               lat,
+               subsidized_prices,
+               installed_capacity,
+               grid_voltage,
+               remark,
+               create_time,
+               create_by,
+               update_time,
+               update_by
+        from power_station
+    </sql>
+
+    <select id="selectPowerStationList" parameterType="PowerStation" resultMap="PowerStationResult">
+        <include refid="selectPowerStationVo"/>
+        <where>
+            <if test="parentId != null  and parentId != ''">
+                and parent_id = #{parentId}
+            </if>
+            <if test="code != null  and code != ''">
+                and code = #{code}
+            </if>
+            <if test="name != null  and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="subsidizedPrices != null ">
+                and subsidized_prices = #{subsidizedPrices}
+            </if>
+            <if test="installedCapacity != null ">
+                and installed_capacity = #{installedCapacity}
+            </if>
+            <if test="gridVoltage != null ">
+                and grid_voltage = #{gridVoltage}
+            </if>
+        </where>
+    </select>
+
+    <select id="listEnergyAnalysisById" resultType="com.ruoyi.pvadmin.domain.entity.PowerStation">
+        SELECT
+        id,
+        `name`
+        FROM
+        `power_station`
+        WHERE
+        <if test="id != null and id != ''">
+            id = #{id}
+        </if>
+        <if test="id == null or id == ''">
+            parent_id is null
+        </if>
+        limit 1
+    </select>
+
+    <select id="selectPowerStationById" resultType="com.ruoyi.pvadmin.domain.entity.PowerStation">
+        SELECT
+        id,
+        `name`
+        FROM
+        `power_station`
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+        </where>
+        ORDER BY `name` DESC
+    </select>
+
+    <select id="selectInfoByid" resultType="com.ruoyi.pvadmin.domain.entity.PowerStation">
+        SELECT
+            `code`,
+            `name`,
+            subsidized_prices,
+            lon,
+            lat
+        FROM
+            `power_station`
+        WHERE
+            id = #{id}
+    </select>
+
+    <select id="listByQueryDto" resultType="com.ruoyi.pvadmin.domain.vo.PowerStationVO">
+        SELECT
+            id,
+            parent_id,
+            `code`,
+            `name`,
+            subsidized_prices,
+            installed_capacity,
+            lon,
+            lat,
+            create_time
+        FROM
+            power_station d
+        <where>
+            <if test="powerStationId != null and powerStationId != ''">
+                id = #{powerStationId}
+            </if>
+            <if test="code != null and code != ''">
+                and code LIKE concat('%', #{code}, '%')
+            </if>
+            <if test="name != null and name != ''">
+                and `name` LIKE concat('%', #{name}, '%')
+            </if>
+            ${params.dataScope}
+        </where>
+            ORDER BY create_time DESC
+    </select>
+
+    <select id="listByPermissions" resultType="com.ruoyi.pvadmin.domain.entity.PowerStation">
+        SELECT
+            id,
+            `name`
+        FROM
+            power_station p
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+            ${params.dataScope}
+        </where>
+
+    </select>
+
+    <insert id="insertPowerStation" parameterType="PowerStation">
+        insert into power_station
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="code != null">code,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="lon != null">lon,</if>
+            <if test="lat != null">lat,</if>
+            <if test="subsidizedPrices != null">subsidized_prices,</if>
+            <if test="installedCapacity != null">installed_capacity,</if>
+            <if test="gridVoltage != null">grid_voltage,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="code != null">#{code},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="lon != null">#{lon},</if>
+            <if test="lat != null">#{lat},</if>
+            <if test="subsidizedPrices != null">#{subsidizedPrices},</if>
+            <if test="installedCapacity != null">#{installedCapacity},</if>
+            <if test="gridVoltage != null">#{gridVoltage},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePowerStation" parameterType="PowerStation">
+        update power_station
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">
+                code = #{code},
+            </if>
+            <if test="parentId != null and parentId != ''">
+                parent_id = #{parentId},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="lon != null">
+                lon = #{lon},
+            </if>
+            <if test="lat != null">
+                lat = #{lat},
+            </if>
+            <if test="subsidizedPrices != null">
+                subsidized_prices = #{subsidizedPrices},
+            </if>
+            <if test="installedCapacity != null">
+                installed_capacity = #{installedCapacity},
+            </if>
+            <if test="gridVoltage != null">
+                grid_voltage = #{gridVoltage},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePowerStationById" parameterType="String">
+        delete
+        from power_station
+        where id = #{id}
+    </delete>
+
+    <delete id="deletePowerStationByIds" parameterType="String">
+        delete from power_station where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pvadmin.mapper.ElectricityTypeSettingMapper">
+
+    <resultMap type="ElectricityTypeSetting" id="ElectricityTypeSettingResult">
+        <result property="id" column="id"/>
+            <result property="beginTime" column="begin_time"/>
+            <result property="endTime" column="end_time"/>
+            <result property="remark" column="remark"/>
+            <result property="createTime" column="create_time"/>
+            <result property="createBy" column="create_by"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="updateBy" column="update_by"/>
+    </resultMap>
+
+    <sql id="selectElectricityTypeSettingVo">
+        select id, begin_time, end_time, remark, create_time, create_by, update_time, update_by
+        from electricity_type_setting
+    </sql>
+
+    <select id="selectElectricityTypeSettingList" parameterType="ElectricityTypeSetting" resultMap="ElectricityTypeSettingResult">
+        <include refid="selectElectricityTypeSettingVo"/>
+        <where>
+                        <if test="beginTime != null ">
+                            and begin_time = #{beginTime}
+                        </if>
+                        <if test="endTime != null ">
+                            and end_time = #{endTime}
+                        </if>
+        </where>
+    </select>
+
+    <select id="selectElectricityTypeSettingById" parameterType="String"
+            resultMap="ElectricityTypeSettingResult">
+            <include refid="selectElectricityTypeSettingVo"/>
+            where id = #{id}
+    </select>
+
+    <select id="isIntersecting" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        `electricity_type_setting`
+        WHERE NOT (end_time &lt; #{beginTime} OR begin_time &gt; #{endTime});
+        <if test="id != null and id != ''">
+            AND id != #{id}
+        </if>
+    </select>
+
+    <select id="listSettingByDate" resultType="com.ruoyi.pvadmin.domain.entity.ElectricityTypeSettingItem">
+        SELECT etsi.type,
+               etsi.begin_time,
+               etsi.end_time
+        FROM `electricity_type_setting` ets
+                 LEFT JOIN `electricity_type_setting_item` etsi ON etsi.parent_id = ets.id
+        WHERE ets.begin_time &lt;= #{dateTime}
+          AND ets.end_time &gt;= #{dateTime}
+        ORDER BY etsi.begin_time ASC, etsi.end_time ASC
+    </select>
+
+    <insert id="insertElectricityTypeSetting" parameterType="ElectricityTypeSetting">
+        insert into electricity_type_setting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,
+            </if>
+            <if test="beginTime != null">begin_time,
+            </if>
+            <if test="endTime != null">end_time,
+            </if>
+                    <if test="remark != null">remark,
+                    </if>
+                    <if test="createTime != null">create_time,
+                    </if>
+                    <if test="createBy != null">create_by,
+                    </if>
+                    <if test="updateTime != null">update_time,
+                    </if>
+                    <if test="updateBy != null">update_by,
+                    </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                    <if test="id != null">#{id},
+                    </if>
+                    <if test="beginTime != null">#{beginTime},
+                    </if>
+                    <if test="endTime != null">#{endTime},
+                    </if>
+                    <if test="remark != null">#{remark},
+                    </if>
+                    <if test="createTime != null">#{createTime},
+                    </if>
+                    <if test="createBy != null">#{createBy},
+                    </if>
+                    <if test="updateTime != null">#{updateTime},
+                    </if>
+                    <if test="updateBy != null">#{updateBy},
+                    </if>
+        </trim>
+    </insert>
+
+    <update id="updateElectricityTypeSetting" parameterType="ElectricityTypeSetting">
+        update electricity_type_setting
+        <trim prefix="SET" suffixOverrides=",">
+                    <if test="beginTime != null">begin_time =
+                        #{beginTime},
+                    </if>
+                    <if test="endTime != null">end_time =
+                        #{endTime},
+                    </if>
+                    <if test="remark != null">remark =
+                        #{remark},
+                    </if>
+                    <if test="createTime != null">create_time =
+                        #{createTime},
+                    </if>
+                    <if test="createBy != null">create_by =
+                        #{createBy},
+                    </if>
+                    <if test="updateTime != null">update_time =
+                        #{updateTime},
+                    </if>
+                    <if test="updateBy != null">update_by =
+                        #{updateBy},
+                    </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteElectricityTypeSettingById" parameterType="String">
+        delete
+        from electricity_type_setting where id = #{id}
+    </delete>
+
+    <delete id="deleteElectricityTypeSettingByIds" parameterType="String">
+        delete from electricity_type_setting where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
