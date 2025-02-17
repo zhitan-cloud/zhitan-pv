@@ -1,5 +1,5 @@
 <p align="center">
-	<img alt="logo" src="readme/logo-chinese.png">
+	<img alt="logo" src="readme/logo-chinese.png" height="150" width="150">
 </p>
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">智碳光伏管理系统</h1>
 <h4 align="center">基于若依框架前后端分离版本</h4>
