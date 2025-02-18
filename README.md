@@ -68,11 +68,11 @@
 
     小程序
 <p>
-    <img src="readme/img/小程序-首页.jpg" width="23%">
-    <img src="readme/img/小程序-电站监测.jpg" width="23%">
-    <img src="readme/img/小程序-我的.jpg" width="25%">
-    <img src="readme/img/小程序-实时监测.jpg" width="25%">
-    <img src="readme/img/小程序-智能报警.jpg" width="25%">>
+    <img src="readme/img/小程序-首页.jpg" width="18%">
+    <img src="readme/img/小程序-电站监测.jpg" width="18%">
+    <img src="readme/img/小程序-我的.jpg" width="20%">
+    <img src="readme/img/小程序-实时监测.jpg" width="20%">
+    <img src="readme/img/小程序-智能报警.jpg" width="20%">>
 </p>
 
 ## 在线体验
