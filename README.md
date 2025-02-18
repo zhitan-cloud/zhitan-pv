@@ -63,6 +63,17 @@
     峰平谷分析 
 ![输入图片说明](readme/img/峰平谷-图表统计.jpg)
 
+    小程序
+<p>
+    <img src="readme/img/小程序-首页.jpg" width="45%">
+    <img src="readme/img/小程序-电站监测.jpg" width="45%">
+</p>
+<p>
+    <img src="readme/img/小程序-我的.jpg" width="30%">
+    <img src="readme/img/小程序-实时监测.jpg" width="30%">
+    <img src="readme/img/小程序-智能报警.jpg" width="30%">
+</p>
+
 ## 在线体验
 
 - guestUser/guest@123456
