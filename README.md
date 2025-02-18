@@ -51,22 +51,22 @@
 
 ## UI展示
 
-    首页
+
 ![输入图片说明](readme/img/首页.jpg)
+    首页
 
-    电站实时状态 
 ![输入图片说明](readme/img/电站实时状态.jpg)
+    电站实时状态 
 
-    环比分析 
 ![输入图片说明](readme/img/环比分析.jpg)
+    环比分析 
 
-    同比分析 
 ![输入图片说明](readme/img/同比分析.jpg)
+    同比分析 
 
-    峰平谷分析 
 ![输入图片说明](readme/img/峰平谷-图表统计.jpg)
+    峰平谷分析 
 
-    小程序
 <p>
     <img src="readme/img/小程序-首页.jpg" width="18%">
     <img src="readme/img/小程序-电站监测.jpg" width="18%">
@@ -76,6 +76,7 @@
     <img src="readme/img/小程序-实时监测.jpg" width="20%">
     <img src="readme/img/小程序-智能报警.jpg" width="20%">>
 </p>
+    小程序
 
 
 ## 在线体验
