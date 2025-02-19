@@ -2,7 +2,7 @@
 	<img alt="logo" src="readme/logo-chinese.png" height="150" width="150">
 </p>
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">智碳光伏管理系统</h1>
-<h4 align="center">基于若依框架前后端分离版本</h4>
+<p align="center">基于若依框架前后端分离版本</p>
 <p align="center">
     <a href='https://gitee.com/ustcyc/zhitan-pv/stargazers'><img src='https://gitee.com/ustcyc/zhitan-pv/badge/star.svg?theme=dark' alt='star'></img></a>
     <a href='https://gitee.com/ustcyc/zhitan-pv/members'><img src='https://gitee.com/ustcyc/zhitan-pv/badge/fork.svg?theme=dark' alt='fork'></img></a>
