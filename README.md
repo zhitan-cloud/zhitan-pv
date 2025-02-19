@@ -1,5 +1,5 @@
 <p align="center">
-	<img alt="logo" src="">
+	<img alt="logo" src="readme/logo-chinese.png" height="150" width="150">
 </p>
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">智碳光伏管理系统</h1>
 <h4 align="center">基于若依框架前后端分离版本</h4>
@@ -19,7 +19,6 @@
 * 高效率开发，使用代码生成器可以一键生成前后端代码。
 
 ## 内置功能
-
 
 ### 1. 实时监测
 #### 1.1 实时数据
@@ -45,37 +44,43 @@
 #### 6.4 设备点检
 #### 6.5 备品备件
 #### 6.6 峰平谷配置
+### 7. 移动端（小程序）
+#### 7.1 首页概览
+#### 7.2 实时监测
+#### 7.3 智能报警
 
 ## UI展示
 
-    首页
+
 ![输入图片说明](readme/img/首页.jpg)
+    首页
 
-    电站实时状态 
 ![输入图片说明](readme/img/电站实时状态.jpg)
+    电站实时状态 
 
-    电站发电统计
 ![输入图片说明](readme/img/电站发电统计.jpg)
-
-    环比分析 
+    电站发电统计
+ 
 ![输入图片说明](readme/img/环比分析.jpg)
+    环比分析 
 
-    同比分析 
 ![输入图片说明](readme/img/同比分析.jpg)
+    同比分析 
 
-    峰平谷分析 
 ![输入图片说明](readme/img/峰平谷-图表统计.jpg)
+    峰平谷分析 
 
+<p>
+    <img src="readme/img/小程序-首页.jpg" width="18%">
+    <img src="readme/img/小程序-电站监测.jpg" width="18%">
+</p>
+<p>
+    <img src="readme/img/小程序-我的.jpg" width="20%">
+    <img src="readme/img/小程序-实时监测.jpg" width="20%">
+    <img src="readme/img/小程序-智能报警.jpg" width="20%">>
+</p>
     小程序
-<p>
-    <img src="readme/img/小程序-首页.jpg" width="45%">
-    <img src="readme/img/小程序-电站监测.jpg" width="45%">
-</p>
-<p>
-    <img src="readme/img/小程序-我的.jpg" width="30%">
-    <img src="readme/img/小程序-实时监测.jpg" width="30%">
-    <img src="readme/img/小程序-智能报警.jpg" width="30%">
-</p>
+
 
 ## 在线体验
 
