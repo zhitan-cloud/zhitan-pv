@@ -138,8 +138,10 @@ public class InfluxDBRepository {
                                            List<String> tagCodes) {
         StringBuilder fluxSql = new StringBuilder();
         fluxSql.append("from(bucket: \"").append(config.getBucket()).append("\")")
-                .append(timeRange).append("|> filter(fn: (r) => r[\"_measurement\"] == \"")
-                .append(config.getMeasurement()).append("\")");
+                .append(timeRange)
+                .append("|> filter(fn: (r) => r[\"_measurement\"] == \"")
+                .append(config.getMeasurement()).append("\")")
+                .append("|> filter(fn: (r) => r[\"_field\"] == \"value\")");
         if (!tagCodes.isEmpty()) {
             fluxSql.append("|> filter(fn: (r) => r[\"tag\"] =~ /");
             List<String> filter = new ArrayList<>(tagCodes);
