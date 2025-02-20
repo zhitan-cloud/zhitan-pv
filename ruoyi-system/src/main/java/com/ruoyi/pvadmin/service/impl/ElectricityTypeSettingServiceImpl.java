@@ -88,14 +88,9 @@ public class ElectricityTypeSettingServiceImpl extends ServiceImpl<ElectricityTy
             LocalDate startOfYear = LocalDate.of(currentYear, 1, 1);
             dto.setBeginTime(Date.from(startOfYear.atStartOfDay(zoneId).toInstant()));
         }
-        if (ObjectUtils.isEmpty(dto.getEndTime())) {
-            // 默认当年结束
-            LocalDate endOfYear = LocalDate.of(currentYear, 12, 31);
-            dto.setEndTime(Date.from(endOfYear.atStartOfDay(zoneId).toInstant()));
-        }
 
         wrapper.gt(ElectricityTypeSetting::getBeginTime, dto.getBeginTime());
-        wrapper.le(ElectricityTypeSetting::getEndTime, dto.getEndTime());
+        wrapper.gt(ElectricityTypeSetting::getEndTime, dto.getBeginTime());
 
         List<ElectricityTypeSetting> settingList = baseMapper.selectList(wrapper);
         List<ElectricityTypeSettingVO> settingVOList = new ArrayList<>(settingList.size());
