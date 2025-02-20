@@ -72,11 +72,6 @@ public class ElectricityTypeSettingServiceImpl extends ServiceImpl<ElectricityTy
     @Override
     public List<ElectricityTypeSettingVO> selectElectricityTypeSettingList(ElectricityTypeSettingQueryDTO dto) {
 
-        LambdaQueryWrapper<ElectricityTypeSetting> wrapper = new LambdaQueryWrapper<>();
-        wrapper.select(ElectricityTypeSetting::getId, ElectricityTypeSetting::getBeginTime, ElectricityTypeSetting::getEndTime,
-                        ElectricityTypeSetting::getRemark, ElectricityTypeSetting::getCreateTime)
-                .orderByAsc(ElectricityTypeSetting::getBeginTime);
-
         // 获取当前日期
         LocalDate currentDate = LocalDate.now();
         // 获取当前年份
@@ -89,12 +84,16 @@ public class ElectricityTypeSettingServiceImpl extends ServiceImpl<ElectricityTy
             dto.setBeginTime(Date.from(startOfYear.atStartOfDay(zoneId).toInstant()));
         }
 
-        wrapper.gt(ElectricityTypeSetting::getBeginTime, dto.getBeginTime());
-        wrapper.gt(ElectricityTypeSetting::getEndTime, dto.getBeginTime());
+        LambdaQueryWrapper<ElectricityTypeSetting> wrapper = new LambdaQueryWrapper<>();
+        wrapper.select(ElectricityTypeSetting::getId, ElectricityTypeSetting::getBeginTime, ElectricityTypeSetting::getEndTime,
+                        ElectricityTypeSetting::getRemark, ElectricityTypeSetting::getCreateTime)
+                .gt(ElectricityTypeSetting::getBeginTime, dto.getBeginTime())
+                .gt(ElectricityTypeSetting::getEndTime, dto.getBeginTime())
+                .orderByAsc(ElectricityTypeSetting::getBeginTime);
 
         List<ElectricityTypeSetting> settingList = baseMapper.selectList(wrapper);
-        List<ElectricityTypeSettingVO> settingVOList = new ArrayList<>(settingList.size());
 
+        List<ElectricityTypeSettingVO> settingVOList = new ArrayList<>(settingList.size());
         if (CollectionUtils.isEmpty(settingList)) {
             return settingVOList;
         }

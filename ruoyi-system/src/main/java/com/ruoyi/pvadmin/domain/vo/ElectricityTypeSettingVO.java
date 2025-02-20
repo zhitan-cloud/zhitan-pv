@@ -19,13 +19,13 @@ public class ElectricityTypeSettingVO {
     /**
      * 开始时间
      */
-    @JsonFormat(pattern = "MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date beginTime;
 
     /**
      * 截止时间
      */
-    @JsonFormat(pattern = "MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
 
     /**
