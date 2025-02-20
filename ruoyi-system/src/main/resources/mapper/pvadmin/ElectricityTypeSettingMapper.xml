@@ -43,7 +43,7 @@
         COUNT(*)
         FROM
         `electricity_type_setting`
-        WHERE NOT (end_time &lt; #{beginTime} OR begin_time &gt; #{endTime});
+        WHERE NOT (end_time &lt; #{beginTime} OR begin_time &gt; #{endTime})
         <if test="id != null and id != ''">
             AND id != #{id}
         </if>
