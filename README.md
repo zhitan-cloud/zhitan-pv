@@ -18,6 +18,49 @@
 * 支持加载动态权限菜单，多方式轻松权限控制。
 * 高效率开发，使用代码生成器可以一键生成前后端代码。
 
+
+## 在线体验
+
+- guestUser/guest@123456
+
+演示地址：  
+http://pvadmin.zhitancloud.com/
+
+## UI展示
+
+![输入图片说明](readme/img/login.png)
+首页
+
+![输入图片说明](readme/img/首页.jpg)
+首页
+
+![输入图片说明](readme/img/电站实时状态.jpg)
+电站实时状态
+
+![输入图片说明](readme/img/电站发电统计.jpg)
+电站发电统计
+
+![输入图片说明](readme/img/环比分析.jpg)
+环比分析
+
+![输入图片说明](readme/img/同比分析.jpg)
+同比分析
+
+![输入图片说明](readme/img/峰平谷-图表统计.jpg)
+峰平谷分析
+
+<p>
+    <img src="readme/img/小程序-首页.jpg" width="18%">
+    <img src="readme/img/小程序-电站监测.jpg" width="18%">
+</p>
+<p>
+    <img src="readme/img/小程序-我的.jpg" width="20%">
+    <img src="readme/img/小程序-实时监测.jpg" width="20%">
+    <img src="readme/img/小程序-智能报警.jpg" width="20%">>
+</p>
+    小程序
+
+
 ## 内置功能
 
 ### 1. 实时监测
@@ -49,45 +92,6 @@
 #### 7.2 实时监测
 #### 7.3 智能报警
 
-## UI展示
-
-
-![输入图片说明](readme/img/首页.jpg)
-    首页
-
-![输入图片说明](readme/img/电站实时状态.jpg)
-    电站实时状态 
-
-![输入图片说明](readme/img/电站发电统计.jpg)
-    电站发电统计
- 
-![输入图片说明](readme/img/环比分析.jpg)
-    环比分析 
-
-![输入图片说明](readme/img/同比分析.jpg)
-    同比分析 
-
-![输入图片说明](readme/img/峰平谷-图表统计.jpg)
-    峰平谷分析 
-
-<p>
-    <img src="readme/img/小程序-首页.jpg" width="18%">
-    <img src="readme/img/小程序-电站监测.jpg" width="18%">
-</p>
-<p>
-    <img src="readme/img/小程序-我的.jpg" width="20%">
-    <img src="readme/img/小程序-实时监测.jpg" width="20%">
-    <img src="readme/img/小程序-智能报警.jpg" width="20%">>
-</p>
-    小程序
-
-
-## 在线体验
-
-- guestUser/guest@123456
-
-演示地址：  
-http://pvadmin.zhitancloud.com/
 
 ## 沟通交流
 
