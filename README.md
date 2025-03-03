@@ -24,7 +24,7 @@
 - guestUser/guest@123456
 
 演示地址：  
-http://pvadmin.zhitancloud.com/
+https://demo-pv.zhitancloud.com/
 
 ## UI展示
 
