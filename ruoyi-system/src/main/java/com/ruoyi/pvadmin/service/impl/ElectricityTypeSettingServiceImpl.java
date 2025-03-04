@@ -72,11 +72,6 @@ public class ElectricityTypeSettingServiceImpl extends ServiceImpl<ElectricityTy
     @Override
     public List<ElectricityTypeSettingVO> selectElectricityTypeSettingList(ElectricityTypeSettingQueryDTO dto) {
 
-        LambdaQueryWrapper<ElectricityTypeSetting> wrapper = new LambdaQueryWrapper<>();
-        wrapper.select(ElectricityTypeSetting::getId, ElectricityTypeSetting::getBeginTime, ElectricityTypeSetting::getEndTime,
-                        ElectricityTypeSetting::getRemark, ElectricityTypeSetting::getCreateTime)
-                .orderByAsc(ElectricityTypeSetting::getBeginTime);
-
         // 获取当前日期
         LocalDate currentDate = LocalDate.now();
         // 获取当前年份
@@ -88,18 +83,17 @@ public class ElectricityTypeSettingServiceImpl extends ServiceImpl<ElectricityTy
             LocalDate startOfYear = LocalDate.of(currentYear, 1, 1);
             dto.setBeginTime(Date.from(startOfYear.atStartOfDay(zoneId).toInstant()));
         }
-        if (ObjectUtils.isEmpty(dto.getEndTime())) {
-            // 默认当年结束
-            LocalDate endOfYear = LocalDate.of(currentYear, 12, 31);
-            dto.setEndTime(Date.from(endOfYear.atStartOfDay(zoneId).toInstant()));
-        }
 
-        wrapper.gt(ElectricityTypeSetting::getBeginTime, dto.getBeginTime());
-        wrapper.le(ElectricityTypeSetting::getEndTime, dto.getEndTime());
+        LambdaQueryWrapper<ElectricityTypeSetting> wrapper = new LambdaQueryWrapper<>();
+        wrapper.select(ElectricityTypeSetting::getId, ElectricityTypeSetting::getBeginTime, ElectricityTypeSetting::getEndTime,
+                        ElectricityTypeSetting::getRemark, ElectricityTypeSetting::getCreateTime)
+                .gt(ElectricityTypeSetting::getBeginTime, dto.getBeginTime())
+                .gt(ElectricityTypeSetting::getEndTime, dto.getBeginTime())
+                .orderByAsc(ElectricityTypeSetting::getBeginTime);
 
         List<ElectricityTypeSetting> settingList = baseMapper.selectList(wrapper);
-        List<ElectricityTypeSettingVO> settingVOList = new ArrayList<>(settingList.size());
 
+        List<ElectricityTypeSettingVO> settingVOList = new ArrayList<>(settingList.size());
         if (CollectionUtils.isEmpty(settingList)) {
             return settingVOList;
         }

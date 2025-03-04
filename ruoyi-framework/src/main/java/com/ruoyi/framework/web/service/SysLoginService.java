@@ -58,10 +58,10 @@ public class SysLoginService {
      * @return 结果
      */
     public String login(String username, String password, String code, String uuid) {
-//         验证码校验
-//        if (StringUtils.isEmpty(code) || StringUtils.isEmpty(uuid)) {
-//            validateCaptcha(username, code, uuid);
-//        }
+        // 验证码校验
+        if (StringUtils.isEmpty(code) || StringUtils.isEmpty(uuid)) {
+            validateCaptcha(username, code, uuid);
+        }
         // 登录前置校验
         loginPreCheck(username, password);
         // 用户验证
