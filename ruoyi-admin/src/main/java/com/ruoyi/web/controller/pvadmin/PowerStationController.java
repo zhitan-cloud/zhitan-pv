@@ -22,6 +22,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -81,6 +82,7 @@ public class PowerStationController extends BaseController {
      */
     @PostMapping
     @ApiOperation("新增电站维护")
+    @PreAuthorize("@ss.hasPermi('operations:powerStation:add')")
     @Log(title = "新增电站维护", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated @RequestBody PowerStationSubmitDTO dto) {
         return toAjax(powerStationService.insertPowerStation(dto));
@@ -92,6 +94,7 @@ public class PowerStationController extends BaseController {
     @PutMapping
     @ApiOperation("修改电站维护")
     @Log(title = "电站维护", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('operations:powerStation:edit')")
     public AjaxResult edit(@Validated @RequestBody PowerStationSubmitDTO dto) {
         if (StringUtils.isBlank(dto.getId())) {
             return AjaxResult.error("未找到修改数据");
@@ -105,6 +108,7 @@ public class PowerStationController extends BaseController {
     @DeleteMapping("/{id}")
     @ApiOperation("删除电站维护")
     @Log(title = "删除电站维护", businessType = BusinessType.DELETE)
+    @PreAuthorize("@ss.hasPermi('operations:powerStation:delete')")
     public AjaxResult remove(@PathVariable String id) {
         return toAjax(powerStationService.deletePowerStationByIds(id));
     }

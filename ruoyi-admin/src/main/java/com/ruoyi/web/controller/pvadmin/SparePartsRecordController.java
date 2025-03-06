@@ -9,6 +9,7 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.pvadmin.domain.entity.SparePartsRecord;
 import com.ruoyi.pvadmin.service.ISparePartsRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -60,6 +61,7 @@ public class SparePartsRecordController extends BaseController {
      */
     @Log(title = "备品备件-操作记录", businessType = BusinessType.INSERT)
     @PostMapping
+    @PreAuthorize("@ss.hasPermi('operations:record:add')")
     public AjaxResult add(@RequestBody SparePartsRecord sparePartsRecord) {
         return toAjax(sparePartsRecordService.insertSparePartsRecord(sparePartsRecord));
     }
@@ -69,6 +71,7 @@ public class SparePartsRecordController extends BaseController {
      */
     @Log(title = "备品备件-操作记录", businessType = BusinessType.UPDATE)
     @PutMapping
+    @PreAuthorize("@ss.hasPermi('operations:record:edit')")
     public AjaxResult edit(@RequestBody SparePartsRecord sparePartsRecord) {
         return toAjax(sparePartsRecordService.updateSparePartsRecord(sparePartsRecord));
     }
@@ -78,6 +81,7 @@ public class SparePartsRecordController extends BaseController {
      */
     @Log(title = "备品备件-操作记录", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
+    @PreAuthorize("@ss.hasPermi('operations:record:delete')")
     public AjaxResult remove(@PathVariable String[] ids) {
         return toAjax(sparePartsRecordService.deleteSparePartsRecordByIds(ids));
     }

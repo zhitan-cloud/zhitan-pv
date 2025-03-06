@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,6 +64,7 @@ public class ElectricityTypeSettingController extends BaseController {
     @PostMapping
     @ApiOperation("新增峰平谷配置")
     @Log(title = "峰平谷配置", businessType = BusinessType.INSERT)
+    @PreAuthorize("@ss.hasPermi('operations:electricityTypeSetting:add')")
     public AjaxResult add(@Validated @RequestBody ElectricityTypeSettingSubmitDTO dto) {
         String msg = electricityTypeSettingService.insertElectricityTypeSetting(dto);
         if (StringUtils.isNotBlank(msg)) {
@@ -78,6 +80,7 @@ public class ElectricityTypeSettingController extends BaseController {
     @PutMapping
     @ApiOperation("修改峰平谷配置")
     @Log(title = "峰平谷配置", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('operations:electricityTypeSetting:edit')")
     public AjaxResult edit(@RequestBody ElectricityTypeSettingSubmitDTO dto) {
         if (StringUtils.isBlank(dto.getId())) {
             return AjaxResult.success();
@@ -96,6 +99,7 @@ public class ElectricityTypeSettingController extends BaseController {
     @DeleteMapping("/{id}")
     @ApiOperation("删除峰平谷配置")
     @Log(title = "删除峰平谷配置", businessType = BusinessType.DELETE)
+    @PreAuthorize("@ss.hasPermi('operations:electricityTypeSetting:delete')")
     public AjaxResult remove(@PathVariable String id) {
         return toAjax(electricityTypeSettingService.deleteElectricityTypeSettingById(id));
     }
@@ -106,6 +110,7 @@ public class ElectricityTypeSettingController extends BaseController {
     @PostMapping("/addItem")
     @ApiOperation("新增峰平谷子项配置")
     @Log(title = "新增峰平谷子项配置", businessType = BusinessType.INSERT)
+    @PreAuthorize("@ss.hasPermi('operations:electricityTypeSetting:add')")
     public AjaxResult addItem(@Validated @RequestBody List<ElectricityTypeSettingItemSubmitDTO> dtoList) {
         if (CollectionUtils.isEmpty(dtoList)) {
             return AjaxResult.success();

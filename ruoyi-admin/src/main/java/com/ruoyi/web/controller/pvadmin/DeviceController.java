@@ -23,6 +23,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -85,6 +86,7 @@ public class DeviceController extends BaseController {
     @PostMapping
     @ApiOperation("新增设备管理")
     @Log(title = "设备管理", businessType = BusinessType.INSERT)
+    @PreAuthorize("@ss.hasPermi('operations:device:add')")
     public AjaxResult add(@Validated @RequestBody DeviceSubmitDTO dto) {
 
         String msg = deviceService.insertDevice(dto);
@@ -101,6 +103,7 @@ public class DeviceController extends BaseController {
     @PutMapping
     @ApiOperation("修改设备管理")
     @Log(title = "设备管理", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('operations:device:edit')")
     public AjaxResult edit(@Validated @RequestBody DeviceSubmitDTO dto) {
         String msg = deviceService.updateDevice(dto);
 
@@ -116,6 +119,7 @@ public class DeviceController extends BaseController {
     @DeleteMapping("/{id}")
     @ApiOperation("删除设备管理")
     @Log(title = "设备管理", businessType = BusinessType.DELETE)
+    @PreAuthorize("@ss.hasPermi('operations:device:delete')")
     public AjaxResult remove(@PathVariable String id) {
         return toAjax(deviceService.deleteDeviceById(id));
     }
@@ -139,6 +143,7 @@ public class DeviceController extends BaseController {
     @PutMapping("/factor")
     @ApiOperation("编辑设备点位")
     @Log(title = "编辑设备点位", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('operations:device:edit')")
     public AjaxResult updateFactor(@RequestBody List<DeviceFactorDTO> request) {
         deviceService.updateFactor(request);
         return AjaxResult.success();

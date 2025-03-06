@@ -17,6 +17,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,6 +61,7 @@ public class DeviceInspectionController extends BaseController {
     @PostMapping
     @ApiOperation("新增设备点检")
     @Log(title = "设备点检", businessType = BusinessType.INSERT)
+    @PreAuthorize("@ss.hasPermi('operations:inspection:add')")
     public AjaxResult add(@Validated @RequestBody DeviceInspectionSubmitDTO dto) {
         return toAjax(deviceInspectionService.insertDeviceInspection(dto));
     }
@@ -70,6 +72,7 @@ public class DeviceInspectionController extends BaseController {
     @PutMapping
     @ApiOperation("修改设备点检")
     @Log(title = "设备点检", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('operations:inspection:edit')")
     public AjaxResult edit(@Validated @RequestBody DeviceInspectionSubmitDTO dto) {
         if (StringUtils.isBlank(dto.getId())) {
             return AjaxResult.error("信息不存在");
@@ -83,6 +86,7 @@ public class DeviceInspectionController extends BaseController {
     @DeleteMapping("/{id}")
     @ApiOperation("删除设备点检")
     @Log(title = "设备点检", businessType = BusinessType.DELETE)
+    @PreAuthorize("@ss.hasPermi('operations:inspection:delete')")
     public AjaxResult remove(@PathVariable String id) {
         return toAjax(deviceInspectionService.deleteDeviceInspectionById(id));
     }
