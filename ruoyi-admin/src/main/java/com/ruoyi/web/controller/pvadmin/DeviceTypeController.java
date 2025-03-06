@@ -10,6 +10,7 @@ import com.ruoyi.pvadmin.domain.vo.DeviceTypeListVO;
 import com.ruoyi.pvadmin.service.IDeviceTypeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,7 @@ public class DeviceTypeController extends BaseController {
      */
     @GetMapping("/list")
     @ApiOperation("查询列表")
+    @PreAuthorize("@ss.hasPermi('operations:deviceType:get')")
     public TableDataInfo list(DeviceTypeQueryDTO request) {
         startPage();
         List<DeviceTypeListVO> list = service.pagedList(request);
@@ -39,12 +41,14 @@ public class DeviceTypeController extends BaseController {
 
     @GetMapping("/index/{id}")
     @ApiOperation("列出点位模板")
+    @PreAuthorize("@ss.hasPermi('operations:deviceType:get')")
     public AjaxResult listIndex(@PathVariable("id") String id) {
         return AjaxResult.success(service.listIndex(id));
     }
 
     @PostMapping("/create")
     @ApiOperation("创建设备类型")
+    @PreAuthorize("@ss.hasPermi('operations:deviceType:add')")
     public AjaxResult create(@Validated @RequestBody DeviceTypeSubmitDTO request) {
         service.create(request);
         return AjaxResult.success();
@@ -52,6 +56,7 @@ public class DeviceTypeController extends BaseController {
 
     @PostMapping("/edit")
     @ApiOperation("编辑设备类型")
+    @PreAuthorize("@ss.hasPermi('operations:deviceType:edit')")
     public AjaxResult edit(@Validated @RequestBody DeviceTypeSubmitDTO request) {
         service.edit(request);
         return AjaxResult.success();
@@ -59,6 +64,7 @@ public class DeviceTypeController extends BaseController {
 
     @DeleteMapping("/{id}")
     @ApiOperation("删除设备类型")
+    @PreAuthorize("@ss.hasPermi('operations:deviceType:delete')")
     public AjaxResult delete(@PathVariable("id") String id) {
         service.delete(id);
         return AjaxResult.success();
@@ -69,6 +75,7 @@ public class DeviceTypeController extends BaseController {
      */
     @PostMapping("/index/{id}")
     @ApiOperation("新增/编辑设备类型模板")
+    @PreAuthorize("@ss.hasPermi('operations:deviceType:add')")
     public AjaxResult editIndex(@PathVariable("id") String id, @RequestBody List<DeviceTypeIndexSubmitDTO> request) {
         service.editIndex(id, request);
         return AjaxResult.success();

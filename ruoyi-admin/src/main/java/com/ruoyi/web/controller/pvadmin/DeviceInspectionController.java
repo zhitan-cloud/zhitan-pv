@@ -17,6 +17,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,7 @@ public class DeviceInspectionController extends BaseController {
      */
     @GetMapping("/list")
     @ApiOperation("查询设备点检列表")
+    @PreAuthorize("@ss.hasPermi('operations:inspection:get')")
     public TableDataInfo list(DeviceInspectionQueryDTO dto) {
         startPage();
         List<DeviceInspectionVO> list = deviceInspectionService.selectDeviceInspectionList(dto);
@@ -50,6 +52,7 @@ public class DeviceInspectionController extends BaseController {
      */
     @GetMapping(value = "/{id}")
     @ApiOperation("获取设备点检详细信息")
+    @PreAuthorize("@ss.hasPermi('operations:inspection:get')")
     public AjaxResult getInfo(@PathVariable("id") String id) {
         return success(deviceInspectionService.selectDeviceInspectionById(id));
     }
@@ -60,6 +63,7 @@ public class DeviceInspectionController extends BaseController {
     @PostMapping
     @ApiOperation("新增设备点检")
     @Log(title = "设备点检", businessType = BusinessType.INSERT)
+    @PreAuthorize("@ss.hasPermi('operations:inspection:add')")
     public AjaxResult add(@Validated @RequestBody DeviceInspectionSubmitDTO dto) {
         return toAjax(deviceInspectionService.insertDeviceInspection(dto));
     }
@@ -70,6 +74,7 @@ public class DeviceInspectionController extends BaseController {
     @PutMapping
     @ApiOperation("修改设备点检")
     @Log(title = "设备点检", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('operations:inspection:edit')")
     public AjaxResult edit(@Validated @RequestBody DeviceInspectionSubmitDTO dto) {
         if (StringUtils.isBlank(dto.getId())) {
             return AjaxResult.error("信息不存在");
@@ -83,6 +88,7 @@ public class DeviceInspectionController extends BaseController {
     @DeleteMapping("/{id}")
     @ApiOperation("删除设备点检")
     @Log(title = "设备点检", businessType = BusinessType.DELETE)
+    @PreAuthorize("@ss.hasPermi('operations:inspection:delete')")
     public AjaxResult remove(@PathVariable String id) {
         return toAjax(deviceInspectionService.deleteDeviceInspectionById(id));
     }
@@ -92,6 +98,7 @@ public class DeviceInspectionController extends BaseController {
      */
     @Log(title = "点检", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
+    @PreAuthorize("@ss.hasPermi('operations:inspection:export')")
     public void export(HttpServletResponse response, DeviceInspectionQueryDTO dto) {
         List<DeviceInspectionExportVO> list = deviceInspectionService.exportList(dto);
         ExcelUtil<DeviceInspectionExportVO> util = new ExcelUtil<>(DeviceInspectionExportVO.class);

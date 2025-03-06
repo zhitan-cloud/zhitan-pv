@@ -23,6 +23,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,7 @@ public class DeviceController extends BaseController {
      */
     @GetMapping("/list")
     @ApiOperation("查询设备管理列表")
+    @PreAuthorize("@ss.hasPermi('operations:device:get')")
     public TableDataInfo list(DeviceQueryDTO dto) {
         startPage();
         List<DeviceVO> list = deviceService.selectDeviceList(dto);
@@ -55,6 +57,7 @@ public class DeviceController extends BaseController {
      */
     @GetMapping("/getInverterGenerationStats")
     @ApiOperation("查询逆变器发电统计")
+    @PreAuthorize("@ss.hasPermi('operations:device:get')")
     public TableDataInfo getInverterGenerationStats(@Validated DeviceGenerationStatsDTO dto) {
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Page<DeviceGenerationStatsVO> page = PageMethod.startPage(pageDomain.getPageNum(), pageDomain.getPageSize());
@@ -71,6 +74,7 @@ public class DeviceController extends BaseController {
      */
     @GetMapping(value = "/{id}")
     @ApiOperation("获取设备管理详细信息")
+    @PreAuthorize("@ss.hasPermi('operations:device:get')")
     public AjaxResult getInfo(@PathVariable("id") String id) {
         if (StringUtils.isBlank(id)) {
             return AjaxResult.success(new DeviceVO());
@@ -85,6 +89,7 @@ public class DeviceController extends BaseController {
     @PostMapping
     @ApiOperation("新增设备管理")
     @Log(title = "设备管理", businessType = BusinessType.INSERT)
+    @PreAuthorize("@ss.hasPermi('operations:device:add')")
     public AjaxResult add(@Validated @RequestBody DeviceSubmitDTO dto) {
 
         String msg = deviceService.insertDevice(dto);
@@ -101,6 +106,7 @@ public class DeviceController extends BaseController {
     @PutMapping
     @ApiOperation("修改设备管理")
     @Log(title = "设备管理", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('operations:device:edit')")
     public AjaxResult edit(@Validated @RequestBody DeviceSubmitDTO dto) {
         String msg = deviceService.updateDevice(dto);
 
@@ -116,6 +122,7 @@ public class DeviceController extends BaseController {
     @DeleteMapping("/{id}")
     @ApiOperation("删除设备管理")
     @Log(title = "设备管理", businessType = BusinessType.DELETE)
+    @PreAuthorize("@ss.hasPermi('operations:device:delete')")
     public AjaxResult remove(@PathVariable String id) {
         return toAjax(deviceService.deleteDeviceById(id));
     }
@@ -125,6 +132,7 @@ public class DeviceController extends BaseController {
      */
     @GetMapping("/index/{id}")
     @ApiOperation("获取设备点位")
+    @PreAuthorize("@ss.hasPermi('operations:device:get')")
     public AjaxResult deviceIndex(@PathVariable("id") String id) {
         if (StringUtils.isBlank(id)) {
             AjaxResult.error("请先选择设备");
@@ -139,6 +147,7 @@ public class DeviceController extends BaseController {
     @PutMapping("/factor")
     @ApiOperation("编辑设备点位")
     @Log(title = "编辑设备点位", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('operations:device:edit')")
     public AjaxResult updateFactor(@RequestBody List<DeviceFactorDTO> request) {
         deviceService.updateFactor(request);
         return AjaxResult.success();
@@ -149,6 +158,7 @@ public class DeviceController extends BaseController {
      */
     @GetMapping("/getInverterInfo")
     @ApiOperation("设备状态-根据设备id查询逆变器信息")
+    @PreAuthorize("@ss.hasPermi('operations:device:get')")
     public AjaxResult getInverterInfo(@RequestParam(value = "id", defaultValue = "-1") String id) {
         return AjaxResult.success(deviceService.getInverterInfo(id));
     }
@@ -158,6 +168,7 @@ public class DeviceController extends BaseController {
      */
     @GetMapping("/getPowerGenerationInfo")
     @ApiOperation("设备状态-根据设备id查询发电信息、收益信息")
+    @PreAuthorize("@ss.hasPermi('operations:device:get')")
     public AjaxResult getPowerGenerationInfo(@RequestParam(value = "id", defaultValue = "-1") String id) {
         return AjaxResult.success(deviceService.getPowerGenerationInfo(id));
     }
@@ -167,6 +178,7 @@ public class DeviceController extends BaseController {
      */
     @GetMapping("/getImplementedPower")
     @ApiOperation("设备状态-根据设备id获取发电趋势信息")
+    @PreAuthorize("@ss.hasPermi('operations:device:get')")
     public AjaxResult getImplementedPower(@RequestParam(value = "id", defaultValue = "-1") String id,
                                           @RequestParam(value = "timeType") TimeTypeEnum timeType) {
         return AjaxResult.success(deviceService.getImplementedPower(id, timeType));
@@ -177,6 +189,7 @@ public class DeviceController extends BaseController {
      */
     @GetMapping("/getACMeasurementsByDeviceId")
     @ApiOperation("设备状态-根据设备id获取交流测信息")
+    @PreAuthorize("@ss.hasPermi('operations:device:get')")
     public AjaxResult getACMeasurementsByDeviceId(@RequestParam(value = "id", defaultValue = "-1") String id) {
         return AjaxResult.success(deviceService.getACMeasurementsByDeviceId(id));
     }
@@ -186,6 +199,7 @@ public class DeviceController extends BaseController {
      */
     @GetMapping("/listDeviceInspectionByDeviceId")
     @ApiOperation("设备状态-根据设备id获取点检与维修信息")
+    @PreAuthorize("@ss.hasPermi('operations:device:get')")
     public AjaxResult listDeviceInspectionByDeviceId(@RequestParam(value = "id", defaultValue = "-1") String id) {
         return AjaxResult.success(deviceService.listDeviceInspectionByDeviceId(id));
     }
