@@ -31,7 +31,7 @@ public class SparePartsRecordController extends BaseController {
      * 查询备品备件-操作记录列表
      */
     @GetMapping("/list")
-    @PreAuthorize("@ss.hasPermi('operations:record:get')")
+    @PreAuthorize("@ss.hasPermi('operations:record:list')")
     public TableDataInfo list(SparePartsRecord sparePartsRecord) {
         startPage();
         List<SparePartsRecord> list = sparePartsRecordService.selectSparePartsRecordList(sparePartsRecord);
@@ -54,7 +54,7 @@ public class SparePartsRecordController extends BaseController {
      * 获取备品备件-操作记录详细信息
      */
     @GetMapping(value = "/{id}")
-    @PreAuthorize("@ss.hasPermi('operations:record:get')")
+    @PreAuthorize("@ss.hasPermi('operations:record:query')")
     public AjaxResult getInfo(@PathVariable("id") String id) {
         return success(sparePartsRecordService.selectSparePartsRecordById(id));
     }
@@ -84,7 +84,7 @@ public class SparePartsRecordController extends BaseController {
      */
     @Log(title = "备品备件-操作记录", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
-    @PreAuthorize("@ss.hasPermi('operations:record:delete')")
+    @PreAuthorize("@ss.hasPermi('operations:record:remove')")
     public AjaxResult remove(@PathVariable String[] ids) {
         return toAjax(sparePartsRecordService.deleteSparePartsRecordByIds(ids));
     }

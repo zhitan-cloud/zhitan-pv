@@ -19,6 +19,7 @@ import com.ruoyi.pvadmin.domain.vo.StockOperationRecordVO;
 import com.ruoyi.pvadmin.service.ISparePartsService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +43,7 @@ public class SparePartsController extends BaseController {
      */
     @GetMapping("/list")
     @ApiOperation("查询备品备件列表")
+    @PreAuthorize("@ss.hasPermi('operations:parts:list')")
     public TableDataInfo list(SparePartsVO spareParts) {
         startPage();
         List<SparePartsVO> list = sparePartsService.selectSparePartsList(spareParts);
@@ -53,6 +55,7 @@ public class SparePartsController extends BaseController {
      */
     @GetMapping("/listOperationRecords")
     @ApiOperation("查询出库入库操作记录列表")
+    @PreAuthorize("@ss.hasPermi('operations:parts:list')")
     public TableDataInfo listOperationRecords(SparePartsRecordQueryDTO dto) {
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Page<DeviceGenerationStatsVO> page = PageMethod.startPage(pageDomain.getPageNum(), pageDomain.getPageSize());
@@ -67,6 +70,7 @@ public class SparePartsController extends BaseController {
      */
     @Log(title = "备品备件", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
+    @PreAuthorize("@ss.hasPermi('operations:parts:export')")
     public void export(HttpServletResponse response, SparePartsVO spareParts) {
         List<SparePartsVO> list = sparePartsService.selectSparePartsList(spareParts);
         ExcelUtil<SparePartsVO> util = new ExcelUtil<>(SparePartsVO.class);
@@ -77,6 +81,7 @@ public class SparePartsController extends BaseController {
      * 获取备品备件详细信息
      */
     @GetMapping(value = "/{id}")
+    @PreAuthorize("@ss.hasPermi('operations:parts:query')")
     public AjaxResult getInfo(@PathVariable("id") String id) {
         return success(sparePartsService.selectSparePartsById(id));
     }
@@ -84,6 +89,7 @@ public class SparePartsController extends BaseController {
     @Log(title = "更新备品备件", businessType = BusinessType.UPDATE)
     @PostMapping("/update")
     @ApiOperation("更新备品备件")
+    @PreAuthorize("@ss.hasPermi('operations:parts:edit')")
     public AjaxResult edit(@RequestBody SparePartsVO spareParts) {
         sparePartsService.edit(spareParts);
         return success();
@@ -92,6 +98,7 @@ public class SparePartsController extends BaseController {
     @Log(title = "删除备品备件", businessType = BusinessType.UPDATE)
     @DeleteMapping("/delete")
     @ApiOperation("删除备品备件")
+    @PreAuthorize("@ss.hasPermi('operations:parts:remove')")
     public AjaxResult delete(@RequestParam(name = "id") String id) {
         sparePartsService.deleteSparePartsById(id);
         return success();
@@ -103,6 +110,7 @@ public class SparePartsController extends BaseController {
     @Log(title = "备品备件", businessType = BusinessType.INSERT)
     @ApiOperation("备品备件入库")
     @PostMapping
+    @PreAuthorize("@ss.hasPermi('operations:parts:add')")
     public AjaxResult inBound(@RequestBody SparePartsVO spareParts) {
         if (StringUtils.isEmpty(spareParts.getCode())) {
             return error("缺少编号！");
@@ -125,6 +133,7 @@ public class SparePartsController extends BaseController {
     @Log(title = "备品备件", businessType = BusinessType.UPDATE)
     @ApiOperation("备品备件出库")
     @PutMapping
+    @PreAuthorize("@ss.hasPermi('operations:parts:edit')")
     public AjaxResult outBound(@RequestBody SparePartsVO spareParts) {
         return toAjax(sparePartsService.outBound(spareParts));
     }
