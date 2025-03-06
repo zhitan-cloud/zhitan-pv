@@ -40,7 +40,7 @@ public class DeviceInspectionController extends BaseController {
      */
     @GetMapping("/list")
     @ApiOperation("查询设备点检列表")
-    @PreAuthorize("@ss.hasPermi('operations:inspection:get')")
+    @PreAuthorize("@ss.hasPermi('operations:inspection:list')")
     public TableDataInfo list(DeviceInspectionQueryDTO dto) {
         startPage();
         List<DeviceInspectionVO> list = deviceInspectionService.selectDeviceInspectionList(dto);
@@ -52,7 +52,7 @@ public class DeviceInspectionController extends BaseController {
      */
     @GetMapping(value = "/{id}")
     @ApiOperation("获取设备点检详细信息")
-    @PreAuthorize("@ss.hasPermi('operations:inspection:get')")
+    @PreAuthorize("@ss.hasPermi('operations:inspection:query')")
     public AjaxResult getInfo(@PathVariable("id") String id) {
         return success(deviceInspectionService.selectDeviceInspectionById(id));
     }
@@ -88,7 +88,7 @@ public class DeviceInspectionController extends BaseController {
     @DeleteMapping("/{id}")
     @ApiOperation("删除设备点检")
     @Log(title = "设备点检", businessType = BusinessType.DELETE)
-    @PreAuthorize("@ss.hasPermi('operations:inspection:delete')")
+    @PreAuthorize("@ss.hasPermi('operations:inspection:remove')")
     public AjaxResult remove(@PathVariable String id) {
         return toAjax(deviceInspectionService.deleteDeviceInspectionById(id));
     }

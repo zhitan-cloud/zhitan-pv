@@ -32,7 +32,7 @@ public class DeviceTypeController extends BaseController {
      */
     @GetMapping("/list")
     @ApiOperation("查询列表")
-    @PreAuthorize("@ss.hasPermi('operations:deviceType:get')")
+    @PreAuthorize("@ss.hasPermi('operations:deviceType:list')")
     public TableDataInfo list(DeviceTypeQueryDTO request) {
         startPage();
         List<DeviceTypeListVO> list = service.pagedList(request);
@@ -41,7 +41,7 @@ public class DeviceTypeController extends BaseController {
 
     @GetMapping("/index/{id}")
     @ApiOperation("列出点位模板")
-    @PreAuthorize("@ss.hasPermi('operations:deviceType:get')")
+    @PreAuthorize("@ss.hasPermi('operations:deviceType:query')")
     public AjaxResult listIndex(@PathVariable("id") String id) {
         return AjaxResult.success(service.listIndex(id));
     }
@@ -64,7 +64,7 @@ public class DeviceTypeController extends BaseController {
 
     @DeleteMapping("/{id}")
     @ApiOperation("删除设备类型")
-    @PreAuthorize("@ss.hasPermi('operations:deviceType:delete')")
+    @PreAuthorize("@ss.hasPermi('operations:deviceType:remove')")
     public AjaxResult delete(@PathVariable("id") String id) {
         service.delete(id);
         return AjaxResult.success();

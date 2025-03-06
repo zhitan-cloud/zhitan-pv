@@ -39,7 +39,7 @@ public class ElectricityTypeSettingController extends BaseController {
      */
     @GetMapping("/list")
     @ApiOperation("查询峰平谷配置列表")
-    @PreAuthorize("@ss.hasPermi('operations:electricityTypeSetting:get')")
+    @PreAuthorize("@ss.hasPermi('operations:electricityTypeSetting:list')")
     public TableDataInfo list(ElectricityTypeSettingQueryDTO dto) {
         startPage();
         List<ElectricityTypeSettingVO> list = electricityTypeSettingService.selectElectricityTypeSettingList(dto);
@@ -51,7 +51,7 @@ public class ElectricityTypeSettingController extends BaseController {
      */
     @GetMapping(value = "/{id}")
     @ApiOperation("获取峰平谷配置详细信息")
-    @PreAuthorize("@ss.hasPermi('operations:electricityTypeSetting:get')")
+    @PreAuthorize("@ss.hasPermi('operations:electricityTypeSetting:query')")
     public AjaxResult getInfo(@PathVariable("id") String id) {
 
         if (StringUtils.isBlank(id)) {
@@ -101,7 +101,7 @@ public class ElectricityTypeSettingController extends BaseController {
     @DeleteMapping("/{id}")
     @ApiOperation("删除峰平谷配置")
     @Log(title = "删除峰平谷配置", businessType = BusinessType.DELETE)
-    @PreAuthorize("@ss.hasPermi('operations:electricityTypeSetting:delete')")
+    @PreAuthorize("@ss.hasPermi('operations:electricityTypeSetting:remove')")
     public AjaxResult remove(@PathVariable String id) {
         return toAjax(electricityTypeSettingService.deleteElectricityTypeSettingById(id));
     }
@@ -130,7 +130,7 @@ public class ElectricityTypeSettingController extends BaseController {
      */
     @GetMapping("/listBySettingId/{settingId}")
     @ApiOperation("根据主项id查询峰平谷子项配置")
-    @PreAuthorize("@ss.hasPermi('operations:electricityTypeSetting:get')")
+    @PreAuthorize("@ss.hasPermi('operations:electricityTypeSetting:list')")
     @Log(title = "根据主项id查询峰平谷子项配置", businessType = BusinessType.INSERT)
     public AjaxResult listBySettingId(@PathVariable String settingId) {
         if (StringUtils.isBlank(settingId)) {
