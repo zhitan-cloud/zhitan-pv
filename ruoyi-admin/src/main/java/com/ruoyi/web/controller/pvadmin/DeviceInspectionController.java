@@ -40,6 +40,7 @@ public class DeviceInspectionController extends BaseController {
      */
     @GetMapping("/list")
     @ApiOperation("查询设备点检列表")
+    @PreAuthorize("@ss.hasPermi('operations:inspection:get')")
     public TableDataInfo list(DeviceInspectionQueryDTO dto) {
         startPage();
         List<DeviceInspectionVO> list = deviceInspectionService.selectDeviceInspectionList(dto);
@@ -51,6 +52,7 @@ public class DeviceInspectionController extends BaseController {
      */
     @GetMapping(value = "/{id}")
     @ApiOperation("获取设备点检详细信息")
+    @PreAuthorize("@ss.hasPermi('operations:inspection:get')")
     public AjaxResult getInfo(@PathVariable("id") String id) {
         return success(deviceInspectionService.selectDeviceInspectionById(id));
     }
@@ -96,6 +98,7 @@ public class DeviceInspectionController extends BaseController {
      */
     @Log(title = "点检", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
+    @PreAuthorize("@ss.hasPermi('operations:inspection:export')")
     public void export(HttpServletResponse response, DeviceInspectionQueryDTO dto) {
         List<DeviceInspectionExportVO> list = deviceInspectionService.exportList(dto);
         ExcelUtil<DeviceInspectionExportVO> util = new ExcelUtil<>(DeviceInspectionExportVO.class);

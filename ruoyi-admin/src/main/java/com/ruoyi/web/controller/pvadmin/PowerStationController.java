@@ -44,6 +44,7 @@ public class PowerStationController extends BaseController {
      */
     @GetMapping("/list")
     @ApiOperation("查询电站维护列表")
+    @PreAuthorize("@ss.hasPermi('operations:powerStation:get')")
     public TableDataInfo list(PowerStationQueryDTO dto) {
         startPage();
         List<PowerStationVO> list = powerStationService.selectPowerStationList(dto);
@@ -55,6 +56,7 @@ public class PowerStationController extends BaseController {
      */
     @GetMapping("/listPowerStationRank")
     @ApiOperation("首页-电站发电排名")
+    @PreAuthorize("@ss.hasPermi('operations:powerStation:get')")
     public AjaxResult listPowerStationRank() {
         return AjaxResult.success(powerStationService.listPowerStationRank());
     }
@@ -64,6 +66,7 @@ public class PowerStationController extends BaseController {
      */
     @GetMapping("/getHomePowerStationInfo")
     @ApiOperation("首页-电站信息")
+    @PreAuthorize("@ss.hasPermi('operations:powerStation:get')")
     public AjaxResult getHomePowerStationInfo() {
         return AjaxResult.success(powerStationService.getHomePowerStationInfo(new BaseEntity()));
     }
@@ -73,6 +76,7 @@ public class PowerStationController extends BaseController {
      */
     @GetMapping(value = "/{id}")
     @ApiOperation("获取电站维护详细信息")
+    @PreAuthorize("@ss.hasPermi('operations:powerStation:get')")
     public AjaxResult getInfo(@PathVariable("id") String id) {
         return success(powerStationService.selectPowerStationById(id));
     }
@@ -118,6 +122,7 @@ public class PowerStationController extends BaseController {
      */
     @GetMapping("/listGenerationStatistics")
     @ApiOperation("查询电站发电统计")
+    @PreAuthorize("@ss.hasPermi('operations:powerStation:get')")
     public TableDataInfo listGenerationStatistics(@Validated GenerationStatisticsDTO dto) {
 
         PageDomain pageDomain = TableSupport.buildPageRequest();
@@ -136,6 +141,7 @@ public class PowerStationController extends BaseController {
      */
     @GetMapping("/getPowerStationInfoById")
     @ApiOperation("电站状态-查询电站发电统计")
+    @PreAuthorize("@ss.hasPermi('operations:powerStation:get')")
     public AjaxResult getPowerStationInfoById(@RequestParam(value = "id", defaultValue = "-1") String id) {
 
         return AjaxResult.success(powerStationService.getPowerStationInfoById(id));
@@ -146,6 +152,7 @@ public class PowerStationController extends BaseController {
      */
     @GetMapping("/getPowerGenerationInfo")
     @ApiOperation("电站状态-根据电站id查询发电信息、收益信息")
+    @PreAuthorize("@ss.hasPermi('operations:powerStation:get')")
     public AjaxResult getPowerGenerationInfo(@RequestParam(value = "id", defaultValue = "-1") String id) {
         return AjaxResult.success(powerStationService.getPowerGenerationInfo(id));
     }
@@ -155,6 +162,7 @@ public class PowerStationController extends BaseController {
      */
     @GetMapping("/getImplementedPower")
     @ApiOperation("电站状态-根据电站id获取发电趋势信息")
+    @PreAuthorize("@ss.hasPermi('operations:powerStation:get')")
     public AjaxResult getImplementedPower(@RequestParam(value = "id") String id,
                                           @RequestParam(value = "timeType") TimeTypeEnum timeType) {
         return AjaxResult.success(powerStationService.getImplementedPower(id, timeType));
@@ -165,6 +173,7 @@ public class PowerStationController extends BaseController {
      */
     @GetMapping("/listDeviceById")
     @ApiOperation("电站状态-根据电站id获取设备信息")
+    @PreAuthorize("@ss.hasPermi('operations:powerStation:get')")
     public AjaxResult listDeviceById(@RequestParam(value = "id", defaultValue = "-1") String id) {
         return AjaxResult.success(powerStationService.listDeviceById(id));
     }

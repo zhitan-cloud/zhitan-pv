@@ -31,6 +31,7 @@ public class SparePartsRecordController extends BaseController {
      * 查询备品备件-操作记录列表
      */
     @GetMapping("/list")
+    @PreAuthorize("@ss.hasPermi('operations:record:get')")
     public TableDataInfo list(SparePartsRecord sparePartsRecord) {
         startPage();
         List<SparePartsRecord> list = sparePartsRecordService.selectSparePartsRecordList(sparePartsRecord);
@@ -42,6 +43,7 @@ public class SparePartsRecordController extends BaseController {
      */
     @Log(title = "备品备件-操作记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
+    @PreAuthorize("@ss.hasPermi('operations:record:export')")
     public void export(HttpServletResponse response, SparePartsRecord sparePartsRecord) {
         List<SparePartsRecord> list = sparePartsRecordService.selectSparePartsRecordList(sparePartsRecord);
         ExcelUtil<SparePartsRecord> util = new ExcelUtil<>(SparePartsRecord.class);
@@ -52,6 +54,7 @@ public class SparePartsRecordController extends BaseController {
      * 获取备品备件-操作记录详细信息
      */
     @GetMapping(value = "/{id}")
+    @PreAuthorize("@ss.hasPermi('operations:record:get')")
     public AjaxResult getInfo(@PathVariable("id") String id) {
         return success(sparePartsRecordService.selectSparePartsRecordById(id));
     }

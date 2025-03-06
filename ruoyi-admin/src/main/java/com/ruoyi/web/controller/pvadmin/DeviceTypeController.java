@@ -32,6 +32,7 @@ public class DeviceTypeController extends BaseController {
      */
     @GetMapping("/list")
     @ApiOperation("查询列表")
+    @PreAuthorize("@ss.hasPermi('operations:deviceType:get')")
     public TableDataInfo list(DeviceTypeQueryDTO request) {
         startPage();
         List<DeviceTypeListVO> list = service.pagedList(request);
@@ -40,6 +41,7 @@ public class DeviceTypeController extends BaseController {
 
     @GetMapping("/index/{id}")
     @ApiOperation("列出点位模板")
+    @PreAuthorize("@ss.hasPermi('operations:deviceType:get')")
     public AjaxResult listIndex(@PathVariable("id") String id) {
         return AjaxResult.success(service.listIndex(id));
     }
