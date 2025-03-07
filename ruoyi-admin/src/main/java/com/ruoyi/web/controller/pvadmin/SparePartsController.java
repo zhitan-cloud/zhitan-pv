@@ -81,7 +81,7 @@ public class SparePartsController extends BaseController {
      * 获取备品备件详细信息
      */
     @GetMapping(value = "/{id}")
-    @PreAuthorize("@ss.hasPermi('operations:parts:query')")
+//    @PreAuthorize("@ss.hasPermi('operations:parts:query')")
     public AjaxResult getInfo(@PathVariable("id") String id) {
         return success(sparePartsService.selectSparePartsById(id));
     }
