@@ -1053,3 +1053,468 @@ create table gen_table_column
     update_time    datetime comment '更新时间',
     primary key (column_id)
 ) engine=innodb auto_increment=1 comment = '代码生成业务表字段';
+
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : 华控测试
+ Source Server Type    : MySQL
+ Source Server Version : 80035 (8.0.35)
+ Source Host           : 192.168.110.124:3306
+ Source Schema         : pv_localized
+
+ Target Server Type    : MySQL
+ Target Server Version : 80035 (8.0.35)
+ File Encoding         : 65001
+
+ Date: 11/03/2025 18:42:38
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for device_inspection
+-- ----------------------------
+DROP TABLE IF EXISTS `device_inspection`;
+CREATE TABLE `device_inspection`  (
+                                      `id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+                                      `power_station_id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '电站Id',
+                                      `power_station_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '电站名称',
+                                      `device_code` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '设备编号',
+                                      `device_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '设备名称',
+                                      `inspection_staff` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '点检人员',
+                                      `inspection_result` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '点检结果',
+                                      `inspection_type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '类型（0：点检，1：维修）',
+                                      `annex` varchar(20000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '附件地址',
+                                      `remark` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
+                                      `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                                      `create_by` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+                                      `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+                                      `update_by` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '修改人',
+                                      `user_id` bigint NULL DEFAULT NULL COMMENT '用户id',
+                                      `dept_id` bigint NULL DEFAULT NULL COMMENT '部门id',
+                                      `inspection_start_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '点检维修开始时间',
+                                      `inspection_end_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '点检维修结束时间',
+                                      `spare_part_name_or_number` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '更换备件的名称/数量',
+                                      `estimated_power_loss` double NOT NULL DEFAULT 0 COMMENT '预估损失电量',
+                                      PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '设备点检' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for device_inspection_annex
+-- ----------------------------
+DROP TABLE IF EXISTS `device_inspection_annex`;
+CREATE TABLE `device_inspection_annex`  (
+                                            `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+                                            `device_inspection_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '设备点检的id',
+                                            `annex` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '附件地址',
+                                            PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for device_type_index_template
+-- ----------------------------
+DROP TABLE IF EXISTS `device_type_index_template`;
+CREATE TABLE `device_type_index_template`  (
+                                               `id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '主键',
+                                               `device_type_id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '设备类型id',
+                                               `device_type_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '设备类型名称',
+                                               `name` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '模板点位名称',
+                                               `code` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '模板点位编码',
+                                               `index_type` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '点位类型（采集点 -COLLECT、计算点-CALCULATE）',
+                                               `unit` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '计量单位',
+                                               `remark` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
+                                               `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                                               `create_by` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+                                               `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+                                               `update_by` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '修改人',
+                                               `tag_key` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '关键点',
+                                               PRIMARY KEY (`id`) USING BTREE,
+                                               INDEX `DEVICE_TYPE_ID_NORMAL_INDEX`(`device_type_id` ASC) USING BTREE,
+                                               INDEX `CODE_NORMAL_INDEX`(`code` ASC) USING BTREE,
+                                               INDEX `INDEX_TYPE_NORMAL_INDEX`(`index_type` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '平台能源折标模板；平台预置的 指标模板，不提供租户给，下面预设的采集点、计算点信息' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for device_type_template
+-- ----------------------------
+DROP TABLE IF EXISTS `device_type_template`;
+CREATE TABLE `device_type_template`  (
+                                         `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+                                         `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '设备类型名称',
+                                         `description` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '设备描述',
+                                         `remark` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
+                                         `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                                         `create_by` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+                                         `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+                                         `update_by` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '修改人',
+                                         PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '设备类型管理' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for electricity_type_setting
+-- ----------------------------
+DROP TABLE IF EXISTS `electricity_type_setting`;
+CREATE TABLE `electricity_type_setting`  (
+                                             `id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+                                             `begin_time` date NOT NULL COMMENT '开始时间',
+                                             `end_time` date NOT NULL COMMENT '截止时间',
+                                             `remark` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
+                                             `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                                             `create_by` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+                                             `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+                                             `update_by` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '修改人',
+                                             PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '峰平谷配置表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for electricity_type_setting_item
+-- ----------------------------
+DROP TABLE IF EXISTS `electricity_type_setting_item`;
+CREATE TABLE `electricity_type_setting_item`  (
+                                                  `id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+                                                  `parent_id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '父级id',
+                                                  `type` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '用电类型（尖、峰、平、谷）',
+                                                  `begin_time` time NOT NULL COMMENT '开始时间',
+                                                  `end_time` time NOT NULL COMMENT '截止时间',
+                                                  `electricity_price` decimal(12, 2) NOT NULL COMMENT '电价',
+                                                  `remark` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
+                                                  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                                                  `create_by` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+                                                  `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+                                                  `update_by` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '修改人',
+                                                  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '峰平谷配置子项' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for gen_table
+-- ----------------------------
+DROP TABLE IF EXISTS `gen_table`;
+CREATE TABLE `gen_table`  (
+                              `table_id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
+                              `table_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '表名称',
+                              `table_comment` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '表描述',
+                              `sub_table_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '关联子表的表名',
+                              `sub_table_fk_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '子表关联的外键名',
+                              `class_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '实体类名称',
+                              `tpl_category` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'crud' COMMENT '使用的模板（crud单表操作 tree树表操作）',
+                              `package_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '生成包路径',
+                              `module_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '生成模块名',
+                              `business_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '生成业务名',
+                              `function_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '生成功能名',
+                              `function_author` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '生成功能作者',
+                              `gen_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '生成代码方式（0zip压缩包 1自定义路径）',
+                              `gen_path` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '/' COMMENT '生成路径（不填默认项目路径）',
+                              `options` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '其它生成选项',
+                              `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+                              `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                              `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+                              `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+                              `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
+                              PRIMARY KEY (`table_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '代码生成业务表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for gen_table_column
+-- ----------------------------
+DROP TABLE IF EXISTS `gen_table_column`;
+CREATE TABLE `gen_table_column`  (
+                                     `column_id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
+                                     `table_id` bigint NULL DEFAULT NULL COMMENT '归属表编号',
+                                     `column_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '列名称',
+                                     `column_comment` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '列描述',
+                                     `column_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '列类型',
+                                     `java_type` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'JAVA类型',
+                                     `java_field` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'JAVA字段名',
+                                     `is_pk` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否主键（1是）',
+                                     `is_increment` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否自增（1是）',
+                                     `is_required` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否必填（1是）',
+                                     `is_insert` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否为插入字段（1是）',
+                                     `is_edit` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否编辑字段（1是）',
+                                     `is_list` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否列表字段（1是）',
+                                     `is_query` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否查询字段（1是）',
+                                     `query_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'EQ' COMMENT '查询方式（等于、不等于、大于、小于、范围）',
+                                     `html_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）',
+                                     `dict_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '字典类型',
+                                     `sort` int NULL DEFAULT NULL COMMENT '排序',
+                                     `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+                                     `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                                     `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+                                     `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+                                     PRIMARY KEY (`column_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 136 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for index_template
+-- ----------------------------
+DROP TABLE IF EXISTS `index_template`;
+CREATE TABLE `index_template`  (
+                                   `id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '主键',
+                                   `name` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '模板点位名称',
+                                   `code` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '模板点位编码',
+                                   `device_type_id` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '表具类型id',
+                                   `index_type` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '点位类型（采集点 -COLLECT、计算点-CALCULATE）',
+                                   `calc_index` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '计算点公式（就是计算指标的累计量所需的采集点指标编码 indexTemplate.code)，这里有一个存储规则[富经理给] 这里会带到 energyIndex.calcText',
+                                   `unit` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '计量单位',
+                                   `remark` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
+                                   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                                   `create_by` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+                                   `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+                                   `update_by` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '修改人',
+                                   PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '平台能源折标模板；平台预置的 指标模板，不提供租户给，下面预设的采集点、计算点信息' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for inventory_location
+-- ----------------------------
+DROP TABLE IF EXISTS `inventory_location`;
+CREATE TABLE `inventory_location`  (
+                                       `id` bigint NOT NULL COMMENT '主键',
+                                       `location` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '库存地点',
+                                       `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+                                       PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for wx_subscribe
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_subscribe`;
+CREATE TABLE `wx_subscribe`  (
+                                 `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+                                 `open_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '微信的open_id',
+                                 `template_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '消息模板id',
+                                 `to_user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+                                 PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for wx_user
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_user`;
+CREATE TABLE `wx_user`  (
+                            `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+                            `user_id` bigint NOT NULL COMMENT '用户id',
+                            `open_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '微信的id',
+                            PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统用户和微信的一对多绑定，一个系统账户可以绑定多个微信，但一个微信只能对应一个系统账户' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for alarm
+-- ----------------------------
+DROP TABLE IF EXISTS `alarm`;
+CREATE TABLE `alarm`  (
+                          `id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+                          `time_code` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '时间code 每10分钟一个',
+                          `data_time` datetime NOT NULL COMMENT '发生时间',
+                          `device_code` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '设备code',
+                          `err_code` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '错误码',
+                          `error_description` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '错误描述',
+                          `solution` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '建议解决方案',
+                          `level` tinyint(1) NOT NULL DEFAULT 1 COMMENT '报警等级（1：一级，2：二级，3：三级）',
+                          `status` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '1' COMMENT '状态（1未解决、2已解决）',
+                          `handlers` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '处理人',
+                          `handlers_name` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '处理人姓名',
+                          `processing_time` datetime NULL DEFAULT NULL COMMENT '处理时间',
+                          `remark` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
+                          `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                          `create_by` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+                          `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+                          `update_by` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '修改人',
+                          `image_url` varchar(1000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '反馈图片',
+                          PRIMARY KEY (`id`) USING BTREE,
+                          UNIQUE INDEX `DEVICE_TIME_ERR_UNIQUE_INDEX`(`time_code` ASC, `device_code` ASC, `err_code` ASC) USING BTREE COMMENT '设备编码+时间（10分钟一次）+错误码 唯一索引'
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '报警表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for power_station
+-- ----------------------------
+DROP TABLE IF EXISTS `power_station`;
+CREATE TABLE `power_station`  (
+                                  `id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+                                  `parent_id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '父级id',
+                                  `code` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '编号',
+                                  `name` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '名称',
+                                  `subsidized_prices` decimal(12, 2) NULL DEFAULT NULL COMMENT '补贴电价',
+                                  `installed_capacity` float(12, 4) NULL DEFAULT 0.0000 COMMENT '电站装机容量',
+  `grid_voltage` float(12, 2) NULL DEFAULT NULL COMMENT '并网电压',
+  `lon` decimal(12, 4) NULL DEFAULT NULL COMMENT '经度',
+  `lat` decimal(12, 4) NULL DEFAULT NULL COMMENT '纬度',
+  `owning_user_id` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '所属用户id',
+  `remark` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `create_by` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+  `update_by` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '修改人',
+  `user_id` bigint NULL DEFAULT NULL COMMENT '用户id',
+  `dept_id` bigint NULL DEFAULT NULL COMMENT '部门id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '电站维护表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for device
+-- ----------------------------
+DROP TABLE IF EXISTS `device`;
+CREATE TABLE `device`  (
+                           `id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+                           `power_station_id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '电站id',
+                           `code` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '设备编号',
+                           `name` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '设备名称',
+                           `device_type_id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '器具类型id',
+                           `capacity` float(12, 2) NULL DEFAULT 0.00 COMMENT '容量',
+  `factory` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '厂家',
+  `rated_ac_power` float(12, 2) NULL DEFAULT 0.00 COMMENT '额定交流功率',
+  `grid_type` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '电网类型',
+  `module_peak_power` float(12, 2) NULL DEFAULT NULL COMMENT '组件峰值功率',
+  `ammeter` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否电表0：否，1：是',
+  `remark` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `create_by` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+  `update_by` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '修改人',
+  `user_id` bigint NULL DEFAULT NULL COMMENT '用户id',
+  `dept_id` bigint NULL DEFAULT NULL COMMENT '部门id',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `CODE_NORMAL_INDEX`(`code` ASC) USING BTREE COMMENT 'CODE加索引，增加查询性能',
+  INDEX `INDEX_TYPE`(`device_type_id` ASC) USING BTREE,
+  INDEX `INDEX_POWER_STATION_ID`(`power_station_id` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '设备管理表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for device_index
+-- ----------------------------
+DROP TABLE IF EXISTS `device_index`;
+CREATE TABLE `device_index`  (
+                                 `id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '主键',
+                                 `index_id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '模板id',
+                                 `device_id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '设备id',
+                                 `index_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '点位名称',
+                                 `index_code` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '点位编号',
+                                 `index_type` varchar(12) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '点位类型（采集点 -COLLECT、计算点-CALCULATE）',
+                                 `calc_index` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '计算点公式（就是计算指标的累计量所需的采集点指标编码 indexTemplate.code)，这里有一个存储规则[富经理给] 这里会带到 energyIndex.calcText',
+                                 `factor` float NULL DEFAULT 1 COMMENT '变比/倍率/系数/等',
+                                 `tag_key` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '网关用来获取对应数据',
+                                 `unit` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '计量单位',
+                                 `remark` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
+                                 `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                                 `create_by` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+                                 `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+                                 `update_by` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '修改人',
+                                 PRIMARY KEY (`id`) USING BTREE,
+                                 INDEX `DEVICE_ID_NORMAL_INDEX`(`device_id` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '设备与点位关系表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for device_type
+-- ----------------------------
+DROP TABLE IF EXISTS `device_type`;
+CREATE TABLE `device_type`  (
+                                `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'id',
+                                `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '名称',
+                                `remark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
+                                `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
+                                `create_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
+                                `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                                `update_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
+                                `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+                                PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for spare_parts_record
+-- ----------------------------
+DROP TABLE IF EXISTS `spare_parts_record`;
+CREATE TABLE `spare_parts_record`  (
+                                       `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+                                       `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '编号',
+                                       `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '名称',
+                                       `specs` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '规格型号',
+                                       `power_station_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '电站id',
+                                       `power_station_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '出入库到电站名称',
+                                       `amount` int NOT NULL DEFAULT 0 COMMENT '操作数量',
+                                       `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT '状态（0入库，1出库）',
+                                       `remark` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
+                                       `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                                       `create_by` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+                                       `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+                                       `update_by` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '修改人',
+                                       `user_id` bigint NULL DEFAULT NULL COMMENT '用户id',
+                                       `dept_id` bigint NULL DEFAULT NULL COMMENT '部门id',
+                                       `location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '库存地点',
+                                       `location_id` bigint NULL DEFAULT NULL COMMENT '库存地点id',
+                                       `movement_date` date NULL DEFAULT NULL COMMENT '出入库日期',
+                                       PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '备品备件-操作记录表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for spare_parts
+-- ----------------------------
+DROP TABLE IF EXISTS `spare_parts`;
+CREATE TABLE `spare_parts`  (
+                                `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+                                `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '编号',
+                                `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '名称',
+                                `specs` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '规格型号',
+                                `power_station_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '电站id',
+                                `power_station_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '电站名称',
+                                `amount` int NOT NULL DEFAULT 0 COMMENT '库存数量',
+                                `remark` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
+                                `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                                `create_by` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+                                `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+                                `update_by` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '修改人',
+                                `user_id` bigint NULL DEFAULT NULL COMMENT '用户id',
+                                `dept_id` bigint NULL DEFAULT NULL COMMENT '部门id',
+                                `location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '库存地点',
+                                `location_id` bigint NULL DEFAULT NULL COMMENT '库存地点id',
+                                PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '备品备件' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for electricity_data_item
+-- ----------------------------
+DROP TABLE IF EXISTS `electricity_data_item`;
+CREATE TABLE `electricity_data_item`  (
+                                          `device_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '设备id',
+                                          `data_time` datetime NOT NULL COMMENT '时间具体到小时',
+                                          `type` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '用电类型峰、平、谷等',
+                                          `begin_time` datetime NULL DEFAULT NULL COMMENT '数据开始时间',
+                                          `end_time` datetime NULL DEFAULT NULL COMMENT '数据结束时间',
+                                          `value` decimal(18, 4) NULL DEFAULT NULL COMMENT '用电量',
+                                          `cost` decimal(18, 4) NULL DEFAULT NULL COMMENT '电费',
+                                          `price` decimal(18, 4) NULL DEFAULT NULL COMMENT '单价',
+                                          `remark` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
+                                          `create_time` datetime NULL DEFAULT NULL,
+                                          `create_by` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+                                          `update_time` datetime NULL DEFAULT NULL,
+                                          `update_by` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '修改人',
+                                          PRIMARY KEY (`data_time`, `type`, `device_id`) USING BTREE,
+                                          INDEX `idx1`(`type` ASC) USING BTREE,
+                                          INDEX `idx2`(`data_time` ASC) USING BTREE,
+                                          INDEX `idx_device_id_data_time`(`device_id` ASC, `data_time` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '电力-峰平谷数据' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for data_item
+-- ----------------------------
+DROP TABLE IF EXISTS `data_item`;
+CREATE TABLE `data_item`  (
+                              `device_id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '计量器具id',
+                              `time_code` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '时间编码',
+                              `time_type` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '时间类型（HOUR、DAY、MONTH、YEAR）',
+                              `data_time` datetime NOT NULL COMMENT '业务时间',
+                              `begin_time` datetime NULL DEFAULT NULL COMMENT '开始时间',
+                              `end_time` datetime NULL DEFAULT NULL COMMENT '截止时间',
+                              `value` decimal(16, 2) NULL DEFAULT NULL COMMENT '值',
+                              `remark` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
+                              `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                              `create_by` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+                              `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+                              `update_by` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '修改人',
+                              PRIMARY KEY (`device_id`, `time_code`, `time_type`) USING BTREE,
+                              UNIQUE INDEX `UNIQUE_INDEX`(`device_id` ASC, `time_code` ASC, `time_type` ASC) USING BTREE COMMENT '唯一索引',
+                              INDEX `idx3`(`data_time` ASC) USING BTREE,
+                              INDEX `idx2`(`device_id` ASC, `data_time` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+
+SET FOREIGN_KEY_CHECKS = 1;
