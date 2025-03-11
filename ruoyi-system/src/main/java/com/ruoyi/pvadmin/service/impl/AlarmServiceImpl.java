@@ -116,7 +116,7 @@ public class AlarmServiceImpl extends ServiceImpl<AlarmMapper, Alarm> implements
 
         List<Alarm> alarmList = baseMapper.selectList(Wrappers.<Alarm>lambdaQuery()
                 .select(Alarm::getStatus, Alarm::getLevel)
-                .in(Alarm::getDeviceCode, deviceCodeList)
+                .in(ObjectUtils.isNotEmpty(deviceCodeList), Alarm::getDeviceCode, deviceCodeList)
                 .between(Alarm::getDataTime, beginTime, endTime)
         );
 

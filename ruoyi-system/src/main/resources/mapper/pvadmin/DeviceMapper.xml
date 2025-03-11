@@ -57,23 +57,20 @@
         <where>
             ammeter = 1
             <if test="powerStationId != null and powerStationId != ''">
-               and power_station_id = #{powerStationId}
+                and power_station_id = #{powerStationId}
             </if>
         </where>
     </select>
 
     <select id="listInforByPowerStationId" resultType="com.ruoyi.pvadmin.domain.entity.Device">
-        SELECT
-            id,
-            `code`,
-            `name`,
-            capacity,
-            factory,
-            ammeter
-        FROM
-            `device`
-        WHERE
-            power_station_id = #{id}
+        SELECT id,
+               `code`,
+               `name`,
+               capacity,
+               factory,
+               ammeter
+        FROM `device`
+        WHERE power_station_id = #{id}
     </select>
     <select id="listAllDeviceByStationId" resultType="com.ruoyi.pvadmin.domain.entity.Device">
         SELECT
@@ -90,21 +87,21 @@
 
     <select id="selectDeviceList" resultType="com.ruoyi.pvadmin.domain.vo.DeviceVO">
         SELECT
-            d.id,
-            d.`code`,
-            d.`name`,
-            dt.`name` deviceType,
-            d.capacity,
-            ps.`name` powerStationName,
-            d.create_time,
-            d.ammeter,
-            d.factory,
-            d.rated_ac_power,
-            d.power_station_id
+        d.id,
+        d.`code`,
+        d.`name`,
+        dt.`name` deviceType,
+        d.capacity,
+        ps.`name` powerStationName,
+        d.create_time,
+        d.ammeter,
+        d.factory,
+        d.rated_ac_power,
+        d.power_station_id
         FROM
-            device d
-            LEFT JOIN power_station ps ON d.power_station_id = ps.id
-            LEFT JOIN device_type dt ON d.device_type_id = dt.id
+        device d
+        LEFT JOIN power_station ps ON d.power_station_id = ps.id
+        LEFT JOIN device_type dt ON d.device_type_id = dt.id
         <where>
             <if test="name != null and name != ''">
                 d.name like concat('%', #{name}, '%')
@@ -129,9 +126,9 @@
 
     <select id="listDeviceId" resultType="java.lang.String">
         SELECT
-            id
+        id
         FROM
-            device d
+        device d
         <where>
             <if test="name != null and name != ''">
                 d.name like concat('%', #{name}, '%')
@@ -161,9 +158,9 @@
 
     <select id="listDeviceCode" resultType="java.lang.String">
         SELECT
-            code
+        code
         FROM
-            device d
+        device d
         <where>
             <if test="name != null and name != ''">
                 d.name like concat('%', #{name}, '%')
@@ -180,11 +177,11 @@
 
     <select id="listByPermissions" resultType="com.ruoyi.pvadmin.domain.entity.Device">
         SELECT
-            id,
-            `name`,
-            ammeter
+        id,
+        `name`,
+        ammeter
         FROM
-            `device` d
+        `device` d
         <where>
             1=1
             <if test="deviceId != null and deviceId != ''">
@@ -199,9 +196,9 @@
 
     <select id="listDeviceIdsByPowerStationId" resultType="java.lang.String">
         SELECT
-            id
+        id
         FROM
-            device d
+        device d
         <where>
             <if test="powerStationId != null and powerStationId != ''">
                 power_station_id = #{powerStationId}
@@ -212,9 +209,9 @@
 
     <select id="listCodeByPermissions" resultType="java.lang.String">
         SELECT
-            `code`
+        `code`
         FROM
-            device
+        device
         <where>
             ${params.dataScope}
         </where>

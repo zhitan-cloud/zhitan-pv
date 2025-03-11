@@ -7,8 +7,10 @@ import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.enums.TimeTypeEnum;
 import com.ruoyi.common.utils.CalcUtil;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.pvadmin.domain.dto.HomeQueryDTO;
 import com.ruoyi.pvadmin.domain.dto.PeakValleyQueryDTO;
+import com.ruoyi.pvadmin.domain.entity.Device;
 import com.ruoyi.pvadmin.domain.entity.ElectricityDataItem;
 import com.ruoyi.pvadmin.domain.entity.ElectricityTypeSettingItem;
 import com.ruoyi.pvadmin.domain.enums.ElectricityTypeEnum;
@@ -279,7 +281,14 @@ public class ElectricityDataItemServiceImpl extends ServiceImpl<ElectricityDataI
         if (StringUtils.isNotBlank(dto.getDeviceId())) {
             deviceIds.add(dto.getDeviceId());
         } else {
-            deviceIds = deviceMapper.listByPowerStationId(dto.getPowerStationId());
+            if (StringUtils.isNotBlank(dto.getPowerStationId())) {
+                deviceIds = deviceMapper.listByPowerStationId(dto.getPowerStationId());
+            }else {
+                Long deptId = SecurityUtils.getDeptId();
+                deviceIds = deviceMapper.selectList(Wrappers.<Device>lambdaQuery()
+                        .eq(Device::getDeptId, deptId))
+                        .stream().map(Device::getId).collect(Collectors.toList());
+            }
         }
         if (CollectionUtils.isEmpty(deviceIds)) {
             deviceIds.add(Constants.STR_MINUS_1);
