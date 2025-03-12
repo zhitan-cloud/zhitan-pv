@@ -12,9 +12,9 @@
 
     <select id="listByPowerStationId" resultType="java.lang.String">
         SELECT
-        id
+            id
         FROM
-        `device`
+            `device`
         <where>
             <if test="powerStationId != null and powerStationId != ''">
                 power_station_id = #{powerStationId}
@@ -24,12 +24,12 @@
 
     <select id="listByPowerStationIds" resultType="com.ruoyi.pvadmin.domain.entity.Device">
         SELECT
-        id,
-        power_station_id
+            id,
+            power_station_id
         FROM
-        `device`
+            `device`
         WHERE
-        power_station_id IN
+            power_station_id IN
         <foreach collection="powerStationIds" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
@@ -37,10 +37,10 @@
 
     <select id="listDeviceById" resultType="com.ruoyi.pvadmin.domain.entity.Device">
         SELECT
-        id,
-        `name`
+            id,
+            `name`
         FROM
-        `device`
+            `device`
         <where>
             <if test="deviceId != null and deviceId != ''">
                 id = #{deviceId}
@@ -50,37 +50,34 @@
 
     <select id="listAmmeterByPowerStationId" resultType="com.ruoyi.pvadmin.domain.entity.Device">
         SELECT
-        id,
-        `name`
+            id,
+            `name`
         FROM
-        `device`
+            `device`
         <where>
             ammeter = 1
             <if test="powerStationId != null and powerStationId != ''">
-               and power_station_id = #{powerStationId}
+                and power_station_id = #{powerStationId}
             </if>
         </where>
     </select>
 
     <select id="listInforByPowerStationId" resultType="com.ruoyi.pvadmin.domain.entity.Device">
-        SELECT
-            id,
-            `code`,
-            `name`,
-            capacity,
-            factory,
-            ammeter
-        FROM
-            `device`
-        WHERE
-            power_station_id = #{id}
+        SELECT id,
+               `code`,
+               `name`,
+               capacity,
+               factory,
+               ammeter
+        FROM `device`
+        WHERE power_station_id = #{id}
     </select>
     <select id="listAllDeviceByStationId" resultType="com.ruoyi.pvadmin.domain.entity.Device">
         SELECT
-        id,
-        `name`
+            id,
+            `name`
         FROM
-        `device`
+            `device`
         <where>
             <if test="powerStationId != null and powerStationId != ''">
                 and power_station_id = #{powerStationId}
@@ -103,8 +100,8 @@
             d.power_station_id
         FROM
             device d
-            LEFT JOIN power_station ps ON d.power_station_id = ps.id
-            LEFT JOIN device_type dt ON d.device_type_id = dt.id
+        LEFT JOIN power_station ps ON d.power_station_id = ps.id
+        LEFT JOIN device_type dt ON d.device_type_id = dt.id
         <where>
             <if test="name != null and name != ''">
                 d.name like concat('%', #{name}, '%')
@@ -124,7 +121,7 @@
             ${params.dataScope}
         </where>
         ORDER BY
-        d.`name` ASC
+            d.`name` ASC
     </select>
 
     <select id="listDeviceId" resultType="java.lang.String">
@@ -148,9 +145,9 @@
 
     <select id="listHomeDeviceIdByPowerStationId" resultType="java.lang.String">
         SELECT
-        id
+            id
         FROM
-        `device` d
+            `device` d
         <where>
             <if test="powerStationId != null and powerStationId != ''">
                 power_station_id = #{powerStationId}
