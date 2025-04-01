@@ -7,8 +7,8 @@
 <p align="center">数采和数据清洗部分网上开源的库很多，学习者可以参考友商集成</p>
 <p align="center"><span style="color: red;">通过本项目，学习者可以掌握光伏监测管理行业的功能和业务，以及技术架构。</span></p>
 <p align="center">
-    <a href='https://gitee.com/zhitancloud/zhitan-pv/stargazers'><img src='https://gitee.com/zhitancloud/zhitan-pv/badge/star.svg?theme=dark' alt='star'></img></a>
-    <a href='https://gitee.com/zhitancloud/zhitan-pv/members'><img src='https://gitee.com/zhitancloud/zhitan-pv/badge/fork.svg?theme=dark' alt='fork'></img></a>
+    <a href='https://gitee.com/wang-xiaoming007/zhitan-pv/stargazers'><img src='https://gitee.com/wang-xiaoming007/zhitan-pv/badge/star.svg?theme=dark' alt='star'></img></a>
+    <a href='https://gitee.com/wang-xiaoming007/zhitan-pv/members'><img src='https://gitee.com/wang-xiaoming007/zhitan-pv/badge/fork.svg?theme=dark' alt='fork'></img></a>
 </p>
 
 ## 平台简介
