@@ -31,8 +31,7 @@ export default defineConfig(({ mode, command }) => {
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
         "/prod-api": {
-          // target: "https://pvwx.sinoesco.com",
-          target: "http://pvadmin.zhitancloud.com", // 内
+          target: "http://localhost:9050", // 内
           changeOrigin: true,
           rewrite: (p) => p.replace(/^\/dev-api/, ""),
         },
